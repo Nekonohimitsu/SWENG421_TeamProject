@@ -1,3 +1,7 @@
+import java.sql.*;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -68,12 +72,33 @@ public class Application extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+            Properties properties = new Properties();
+            properties.put("user","Troyana");
+            properties.put("password", "WeAreGraduating");
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/recipe_application", properties);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM APP.INGREDIENTS");
+            while (rs.next()) {
+                int id = rs.getInt("ingredient_id");
+                String name = rs.getString("ingredient_name");
+                System.out.println(id + "   " + name);
+            }
+        }catch(SQLException e){
+            System.err.println(e);
+        }                 
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Application().setVisible(true);
             }
+            
         });
     }
 
