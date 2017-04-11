@@ -1,0 +1,9 @@
+1. In NetBeans, navigate from the Projects tab to the Services tab. You should see Databases as well as several other options.
+2. Click the + by Databases and you should see Java DB.
+3. Right-Click on Java DB and click Properties. 
+4. Make sure that the Java DB Installation points to something in jdk. For instance, mine is C:\Program Files\Java\jdk1.8.0_121\db
+5. Point the Database Location to the Derby folder in GitHub. For me, this is C:\Users\Troyana\Documents\GitHub\SWENG421_TeamProject\Derby
+6. You should now be able to see recipe_application after clicking the + by Java DB. 
+7. Right click on Java DB and click Start Server. 
+8. RIght click on recipe_application and click "Connect..."
+9. Any changes you wish to make to the database's tables should then be done via "recipe_app DB" or if it is not named for you, then localhost:1527 /recipe_application of some sort which should've appeared in the Databases hierarchy.
