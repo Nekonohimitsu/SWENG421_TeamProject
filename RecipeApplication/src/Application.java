@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utilities.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -79,6 +80,7 @@ public class Application extends javax.swing.JFrame {
                 new Application().setVisible(true);
             } 
         });
+        IngredientFactory ingf = new IngredientFactory();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -14,10 +14,11 @@ public class IngredientManager {
         return instance;
     }
     
-    public void updateList(String ingredientName) {
+    public void updateList(String ingredientName, DataRetriever dr) {
         Ingredient obtainedIngredient = ingredientFactory.getIngredient(ingredientName);
         if (obtainedIngredient != null) {
             ingredientList.add(obtainedIngredient);
         }
+        dr.updateRecipes(ingredientList);
     }
 }
