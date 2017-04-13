@@ -71,22 +71,13 @@ public class Application extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        
-//            Statement stmt = con.createStatement();
-//            ResultSet rs = stmt.executeQuery("SELECT * FROM APP.INGREDIENTS");
-//            while (rs.next()) {
-//                int id = rs.getInt("ingredient_id");
-//                String name = rs.getString("ingredient_name");
-//                System.out.println(id + "   " + name);
-//            }               
+        //</editor-fold>     
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Application().setVisible(true);
-            }
-            
+            } 
         });
     }
 
