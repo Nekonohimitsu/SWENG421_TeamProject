@@ -1,10 +1,10 @@
 package utilities;
 
+import application.Client;
 import java.util.ArrayList;
-import javafx.application.Application;
 
-public interface DataRetrieverIF {
-    public abstract ArrayList<Recipe> retrieveData();
-    public void addObserver(Application client);
-    public void rmvObserver(Application client);
+interface DataRetrieverIF {
+    abstract ArrayList<Recipe> retrieveData(ArrayList<Ingredient> il);
+    void addObserver(Client client);
+    void rmvObserver(Client client);
 }

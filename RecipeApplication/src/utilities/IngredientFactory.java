@@ -21,7 +21,6 @@ public class IngredientFactory {
                 if (!ingredientList.containsKey(name)) {
                     ingredientList.put(name, pulledIngredient);
                 }
-                System.out.println("Placed ingredient into HashMap: " + ingredientList.get(name).toString());
             }          
         } catch (SQLException ex) {
             Logger.getLogger(IngredientFactory.class.getName()).log(Level.SEVERE, null, ex);
