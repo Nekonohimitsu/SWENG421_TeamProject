@@ -28,6 +28,8 @@ public class Client extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,17 +45,33 @@ public class Client extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addComponent(jButton1)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(113, 113, 113)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jTextField2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
+
+        jTextField1.getAccessibleContext().setAccessibleName("myTextField");
+        jTextField2.getAccessibleContext().setAccessibleName("OthersTextField");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -61,6 +79,7 @@ public class Client extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         dr.addIngredient("Milk");
+        jTextField1.setText("Milk\n");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -103,11 +122,28 @@ public class Client extends javax.swing.JFrame {
     }
     
     public void displayRecipeList(ArrayList<Recipe> rl) {
-        System.out.println("Got message:");
-        for (Recipe r : rl) System.out.println(r.getName());
+        for (Recipe r : rl) {
+           jTextField1.setText(jTextField1.getText() + r.getName() + "\n");
+        }
+    }
+    
+    public void displayOthersIngredients(ArrayList<String> il) {
+        for (String s : il) {
+           jTextField2.setText(jTextField2.getText() + s + "\n");
+        }
+    }
+    
+    public void addPanel(SpecialPanel p) {
+        System.out.println("Adding new panel with ID of: " + p.getID());
+    }
+    
+    public void removePanel(SpecialPanel p) {
+       System.out.println("Removing panel with ID of: " + p.getID()); 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
