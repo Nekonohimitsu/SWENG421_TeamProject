@@ -4,11 +4,11 @@ package application;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-public class SpecialPanel extends JPanel{
+public class friendIngredientsPanel extends JPanel{
     private final int clientID;
     private ArrayList<String> ingredientList = new ArrayList<>();
     
-    public SpecialPanel(int clientID) {
+    public friendIngredientsPanel(int clientID) {
         this.clientID = clientID;
     }
     public int getID() { return clientID; }

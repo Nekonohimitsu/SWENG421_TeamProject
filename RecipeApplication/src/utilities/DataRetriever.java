@@ -1,5 +1,5 @@
 package utilities;
-import application.SpecialPanel;
+import application.friendIngredientsPanel;
 import application.Client;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Server;
+import server.MessageAbs;
 
 public class DataRetriever extends Thread {
     private static DataRetriever instance = null;
-    private ArrayList<SpecialPanel> otherClientPanels = new ArrayList<>();
+    private ArrayList<friendIngredientsPanel> otherClientPanels = new ArrayList<>();
     private Socket s;
     private ObjectInputStream is;
     private ObjectOutputStream os;
@@ -68,47 +69,45 @@ public class DataRetriever extends Thread {
     public void run() {
         while(!s.isClosed()) {
             try {
-                Object incomingObject;
-                while ((incomingObject = is.readObject()) != null) {
+                MessageAbs incomingObject;
+                while ((incomingObject = (MessageAbs)is.readObject()) != null) {
                     System.out.println("Recieved Message: " + incomingObject.toString());
-                    if (incomingObject.toString().equals(Server.SEND_INGREDIENT_LIST_TITLE)) {
-                        //If it is updating ingredient list,
-                        //We know it will be the client id next,
-                        //Followed by an arraylist of ingredient names.
-                        int clientID = (int)is.readObject();
-                        ArrayList ingList = (ArrayList)is.readObject();
-                        sendIngredientListToClient(ingList);
-                    } else if (incomingObject.toString().equals(Server.SEND_RECIPE_LIST_TITLE)) {
-                        //If it is update recipe list,
-                        //Then next will be a recipe list.
-                        ArrayList<Recipe> recipeList = (ArrayList)is.readObject();
-                        sendRecipeListToClient(recipeList);
-                    } else if (incomingObject.toString().equals(Server.ADD_NEW_CLIENT_TITLE)) {
-                        int clientID = (int)is.readObject();
-                        SpecialPanel p = new SpecialPanel(clientID);
-                        otherClientPanels.add(p);
-                        c.addPanel(p);
-                    } else if (incomingObject.toString().equals(Server.REMOVE_CLIENT_TITLE)) {
-                        int clientID = (int)is.readObject();
-                        for (SpecialPanel p : otherClientPanels) {
-                            if (p.getID() == clientID){
-                                otherClientPanels.remove(p);
-                                c.removePanel(p);
-                                break;
+                    int clientID = incomingObject.getMessageSenderID();
+                    switch(incomingObject.getMessageTitle()) {
+                        case Server.SEND_INGREDIENT_LIST_TITLE:
+                            ArrayList<String> ingList = (ArrayList) incomingObject.getMessageContent();
+                            sendIngredientListToClient(ingList);
+                            break;
+                        case Server.SEND_RECIPE_LIST_TITLE:
+                            ArrayList<Recipe> recipeList = (ArrayList)incomingObject.getMessageContent();
+                            sendRecipeListToClient(recipeList);
+                            break;
+                        case Server.ADD_NEW_CLIENT_TITLE:
+                            friendIngredientsPanel p = new friendIngredientsPanel(clientID);
+                            otherClientPanels.add(p);
+                            c.addPanel(p);
+                            break;
+                        case Server.REMOVE_CLIENT_TITLE:
+                            for (friendIngredientsPanel panel : otherClientPanels) {
+                                if (panel.getID() == clientID){
+                                    otherClientPanels.remove(panel);
+                                    c.removePanel(panel);
+                                    break;
+                                }
                             }
-                        }
-                    }else if (incomingObject.toString().equals(Server.WELCOME_TITLE)) {
-                        int clientID = (int)is.readObject();
-                        ArrayList<String> ingList = (ArrayList) is.readObject();
-                        SpecialPanel p = new SpecialPanel(clientID);
-                        otherClientPanels.add(p);
-                        c.addPanel(p);
-                        p.setIngredientList(ingList);
+                            break;
+                        case Server.WELCOME_TITLE:
+                            ingList = (ArrayList)incomingObject.getMessageContent();
+                            p = new friendIngredientsPanel(clientID);
+                            otherClientPanels.add(p);
+                            c.addPanel(p);
+                            p.setIngredientList(ingList);
+                            break;
+                        default:
+                            break;
                     }
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -133,11 +133,11 @@ public class Client extends javax.swing.JFrame {
         }
     }
     
-    public void addPanel(SpecialPanel p) {
+    public void addPanel(friendIngredientsPanel p) {
         System.out.println("Adding new panel with ID of: " + p.getID());
     }
     
-    public void removePanel(SpecialPanel p) {
+    public void removePanel(friendIngredientsPanel p) {
        System.out.println("Removing panel with ID of: " + p.getID()); 
     }
 

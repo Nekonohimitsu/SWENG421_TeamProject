@@ -22,62 +22,56 @@ public class Server {
             ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
             ServerThread st = new ServerThread(s, is, os, currentID++);
             listOfClients.add(st);
-            sendMessage(st, ADD_NEW_CLIENT_TITLE, null);
+            sendMessage(new Message(ADD_NEW_CLIENT_TITLE, null, st));
             st.start();
        }
     }
-    private static void removeClient(ServerThread sendingClient) throws IOException {
+    private static void removeClient(MessageAbs m) throws IOException {
         for (ServerThread client : listOfClients) {
-            if (client.getOutputStream() != sendingClient.getOutputStream()) {
-                client.getOutputStream().writeObject(REMOVE_CLIENT_TITLE);
-                client.getOutputStream().writeObject(sendingClient.getClientID());
+            if (client.getOutputStream() != m.getMessageSender().getOutputStream()) {
+                client.getOutputStream().writeObject(m);
             }
         }
-        listOfClients.remove(sendingClient);
+        listOfClients.remove(m.getMessageSender());
         if (listOfClients.isEmpty()) currentID = 0;
     }
     
-    private static void sendNewClient(ServerThread sendingClient) throws IOException {
+    private static void sendNewClient(MessageAbs m) throws IOException {
         for (ServerThread client : listOfClients) {
-            if (client.getOutputStream() != sendingClient.getOutputStream()) {
-                client.getOutputStream().writeObject(ADD_NEW_CLIENT_TITLE);
-                client.getOutputStream().writeObject(sendingClient.getClientID());
+            if (client.getOutputStream() != m.getMessageSender().getOutputStream()) {
+                client.getOutputStream().writeObject(m);
                 //For each other client, send their information to the new client that just joined.
-                sendingClient.getOutputStream().writeObject(WELCOME_TITLE);
-                sendingClient.getOutputStream().writeObject(client.getClientID());
-                sendingClient.getOutputStream().writeObject(client.getIngredientList());
+                MessageAbs welcomeMessage = new Message(WELCOME_TITLE, client.getIngredientList(), client);
+                m.getMessageSender().getOutputStream().writeObject(welcomeMessage);
             }
         }
     }
-    private static void sendRecipeList(ArrayList<Recipe> r) throws IOException {
+    private static void sendRecipeList(MessageAbs m) throws IOException {
         for (ServerThread client : listOfClients) {
-            client.getOutputStream().writeObject(SEND_RECIPE_LIST_TITLE);
-            client.getOutputStream().writeObject(r);
+            client.getOutputStream().writeObject(m);
         }
     }
-    private static void sendIngredientList(ServerThread sendingClient, ArrayList<String> ingList) throws IOException {
+    private static void sendIngredientList(MessageAbs m) throws IOException {
         for (ServerThread client : listOfClients) {
-            if (client.getOutputStream() != sendingClient.getOutputStream()) {
-                client.getOutputStream().writeObject(SEND_INGREDIENT_LIST_TITLE);
-                client.getOutputStream().writeObject(sendingClient.getClientID());
-                client.getOutputStream().writeObject(ingList);
+            if (client.getOutputStream() != m.getMessageSender().getOutputStream()) {
+                client.getOutputStream().writeObject(m);
             }
         }
     }
     
-    static void sendMessage(ServerThread sendingClient, String messageTitle, Object messageContent) throws IOException {
-        switch (messageTitle) {
+    static void sendMessage(MessageAbs m) throws IOException {
+        switch (m.getMessageTitle()) {
             case SEND_INGREDIENT_LIST_TITLE:
-                sendIngredientList(sendingClient, (ArrayList)messageContent);
+                sendIngredientList(m);
                 break;
             case REMOVE_CLIENT_TITLE:
-                removeClient(sendingClient);
+                removeClient(m);
                 break;
             case ADD_NEW_CLIENT_TITLE:
-                sendNewClient(sendingClient);
+                sendNewClient(m);
                 break;
             case SEND_RECIPE_LIST_TITLE:
-                sendRecipeList((ArrayList) messageContent);
+                sendRecipeList(m);
                 break;
             default:
                 break;

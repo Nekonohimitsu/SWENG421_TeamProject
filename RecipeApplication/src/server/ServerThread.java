@@ -38,10 +38,10 @@ class ServerThread extends Thread{
             ingredientList.add("This...");
             ingredientList.add("Works!?");
             while ((r2 = (Recipe)is.readObject()) != null) {
-                Server.sendMessage(this, Server.SEND_RECIPE_LIST_TITLE, rl);
-                Server.sendMessage(this, Server.SEND_INGREDIENT_LIST_TITLE, ingredientList);
+                Server.sendMessage(new Message(Server.SEND_RECIPE_LIST_TITLE, rl, this));
+                Server.sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
             }
-            Server.sendMessage(this, Server.REMOVE_CLIENT_TITLE, null);
+            Server.sendMessage(new Message(Server.REMOVE_CLIENT_TITLE, null, this));
             is.close();
             os.close();
             s.close();
