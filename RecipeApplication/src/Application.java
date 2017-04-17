@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,22 +30,111 @@ public class Application extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        bodyPanel = new javax.swing.JPanel();
+        ingredientsPanel = new javax.swing.JPanel();
+        selfPanel = new javax.swing.JPanel();
+        selfHeaderLbl = new javax.swing.JLabel();
+        selfIngredientsPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        friendPanel = new javax.swing.JPanel();
+        friendHeaderLbl = new javax.swing.JLabel();
+        jMenuBar = new javax.swing.JMenuBar();
+        jMenu = new javax.swing.JMenu();
+        Instructions = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SHArecipes");
+        setBackground(new java.awt.Color(255, 255, 255));
+        setFont(new java.awt.Font("Lucida Sans Unicode", 0, 18)); // NOI18N
+        setForeground(java.awt.Color.white);
+        setMaximumSize(new java.awt.Dimension(500, 500));
+        setPreferredSize(new java.awt.Dimension(1116, 700));
+        setResizable(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        bodyPanel.setLayout(new java.awt.BorderLayout());
+
+        ingredientsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        ingredientsPanel.setMinimumSize(new java.awt.Dimension(200, 32));
+        ingredientsPanel.setPreferredSize(new java.awt.Dimension(200, 674));
+        ingredientsPanel.setLayout(new java.awt.GridLayout(2, 1, 5, 0));
+
+        selfPanel.setLayout(new java.awt.BorderLayout());
+
+        selfHeaderLbl.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        selfHeaderLbl.setText("My ingredients:");
+        selfPanel.add(selfHeaderLbl, java.awt.BorderLayout.PAGE_START);
+
+        selfIngredientsPanel.setLayout(new java.awt.GridBagLayout());
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        selfIngredientsPanel.add(jScrollPane1, gridBagConstraints);
+
+        jTextField1.setText("jTextField1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.7;
+        selfIngredientsPanel.add(jTextField1, gridBagConstraints);
+
+        jButton1.setText("jButton1");
+        selfIngredientsPanel.add(jButton1, new java.awt.GridBagConstraints());
+
+        selfPanel.add(selfIngredientsPanel, java.awt.BorderLayout.CENTER);
+
+        ingredientsPanel.add(selfPanel);
+
+        friendPanel.setLayout(new javax.swing.BoxLayout(friendPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        friendHeaderLbl.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        friendHeaderLbl.setText("Also in this session...");
+        friendPanel.add(friendHeaderLbl);
+
+        ingredientsPanel.add(friendPanel);
+
+        bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_END);
+
+        getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
+
+        jMenu.setText("Help");
+
+        Instructions.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        Instructions.setText("Instructions");
+        Instructions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InstructionsActionPerformed(evt);
+            }
+        });
+        jMenu.add(Instructions);
+
+        jMenuBar.add(jMenu);
+
+        setJMenuBar(jMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void InstructionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructionsActionPerformed
+        try {
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "HelpDoc.txt");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.toString());
+        }
+    }//GEN-LAST:event_InstructionsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -82,5 +172,19 @@ public class Application extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Instructions;
+    private javax.swing.JPanel bodyPanel;
+    private javax.swing.JLabel friendHeaderLbl;
+    private javax.swing.JPanel friendPanel;
+    private javax.swing.JPanel ingredientsPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel selfHeaderLbl;
+    private javax.swing.JPanel selfIngredientsPanel;
+    private javax.swing.JPanel selfPanel;
     // End of variables declaration//GEN-END:variables
 }
