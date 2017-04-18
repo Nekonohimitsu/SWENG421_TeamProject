@@ -35,25 +35,39 @@ public class Application extends javax.swing.JFrame {
         bodyPanel = new javax.swing.JPanel();
         ingredientsPanel = new javax.swing.JPanel();
         selfPanel = new javax.swing.JPanel();
-        selfHeaderLbl = new javax.swing.JLabel();
-        selfIngredientsPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        friendPanel = new javax.swing.JPanel();
-        friendHeaderLbl = new javax.swing.JLabel();
+        selfLabel = new javax.swing.JLabel();
+        addIngredientTextField = new javax.swing.JTextField();
+        addIngredientButton = new javax.swing.JButton();
+        myScrollPane = new javax.swing.JScrollPane();
+        myIngredientList = new javax.swing.JList<>();
+        friendsPanel = new javax.swing.JPanel();
+        friendsLabel = new javax.swing.JLabel();
+        friendScrollPane = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
+        searchPanel = new javax.swing.JPanel();
+        searchTextField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        contentPanel = new javax.swing.JPanel();
+        chooseRecipeLabel = new javax.swing.JLabel();
+        recipesScrollPane = new javax.swing.JScrollPane();
+        recipeList = new javax.swing.JList<>();
+        recipeLabel = new javax.swing.JLabel();
+        recipePane = new javax.swing.JScrollPane();
+        recipeTextArea = new javax.swing.JTextArea();
+        jSeparator1 = new javax.swing.JSeparator();
+        modModeToggle = new javax.swing.JToggleButton();
+        modModeLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu = new javax.swing.JMenu();
         Instructions = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SHArecipes");
+        setTitle("Friend Feast");
         setBackground(new java.awt.Color(255, 255, 255));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Lucida Sans Unicode", 0, 18)); // NOI18N
         setForeground(java.awt.Color.white);
-        setMaximumSize(new java.awt.Dimension(500, 500));
-        setPreferredSize(new java.awt.Dimension(1116, 700));
+        setLocation(new java.awt.Point(100, 100));
         setResizable(false);
 
         bodyPanel.setLayout(new java.awt.BorderLayout());
@@ -61,52 +75,185 @@ public class Application extends javax.swing.JFrame {
         ingredientsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         ingredientsPanel.setMinimumSize(new java.awt.Dimension(200, 32));
         ingredientsPanel.setPreferredSize(new java.awt.Dimension(200, 674));
-        ingredientsPanel.setLayout(new java.awt.GridLayout(2, 1, 5, 0));
+        ingredientsPanel.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
 
-        selfPanel.setLayout(new java.awt.BorderLayout());
+        selfLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        selfLabel.setText("My Ingredients");
 
-        selfHeaderLbl.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        selfHeaderLbl.setText("My ingredients:");
-        selfPanel.add(selfHeaderLbl, java.awt.BorderLayout.PAGE_START);
+        addIngredientButton.setText("+");
 
-        selfIngredientsPanel.setLayout(new java.awt.GridBagLayout());
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        myIngredientList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "No ingredients in list..." };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        myScrollPane.setViewportView(myIngredientList);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        selfIngredientsPanel.add(jScrollPane1, gridBagConstraints);
-
-        jTextField1.setText("jTextField1");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.7;
-        selfIngredientsPanel.add(jTextField1, gridBagConstraints);
-
-        jButton1.setText("jButton1");
-        selfIngredientsPanel.add(jButton1, new java.awt.GridBagConstraints());
-
-        selfPanel.add(selfIngredientsPanel, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout selfPanelLayout = new javax.swing.GroupLayout(selfPanel);
+        selfPanel.setLayout(selfPanelLayout);
+        selfPanelLayout.setHorizontalGroup(
+            selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selfPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                    .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(selfPanelLayout.createSequentialGroup()
+                        .addComponent(addIngredientTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addIngredientButton)))
+                .addContainerGap())
+        );
+        selfPanelLayout.setVerticalGroup(
+            selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selfPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(selfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(addIngredientTextField)
+                    .addComponent(addIngredientButton, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         ingredientsPanel.add(selfPanel);
 
-        friendPanel.setLayout(new javax.swing.BoxLayout(friendPanel, javax.swing.BoxLayout.Y_AXIS));
+        friendsLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        friendsLabel.setText("Also in this session:");
 
-        friendHeaderLbl.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        friendHeaderLbl.setText("Also in this session...");
-        friendPanel.add(friendHeaderLbl);
+        friendScrollPane.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        ingredientsPanel.add(friendPanel);
+        javax.swing.GroupLayout friendsPanelLayout = new javax.swing.GroupLayout(friendsPanel);
+        friendsPanel.setLayout(friendsPanelLayout);
+        friendsPanelLayout.setHorizontalGroup(
+            friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, friendsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(friendScrollPane)
+                    .addComponent(friendsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        friendsPanelLayout.setVerticalGroup(
+            friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(friendsPanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(friendsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(friendScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        ingredientsPanel.add(friendsPanel);
 
         bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_END);
+
+        mainPanel.setLayout(new java.awt.BorderLayout());
+
+        searchTextField.setText("Enter recipe name");
+
+        searchButton.setText("Search");
+
+        javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
+        searchPanel.setLayout(searchPanelLayout);
+        searchPanelLayout.setHorizontalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButton)
+                .addContainerGap())
+        );
+        searchPanelLayout.setVerticalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                    .addComponent(searchTextField))
+                .addContainerGap())
+        );
+
+        mainPanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
+
+        chooseRecipeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        chooseRecipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        chooseRecipeLabel.setText("Recipe List");
+        chooseRecipeLabel.setToolTipText("");
+        chooseRecipeLabel.setAlignmentX(0.5F);
+
+        recipeList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "No recipes in list..." };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        recipesScrollPane.setViewportView(recipeList);
+
+        recipeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        recipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        recipeLabel.setText("Recipe");
+        recipeLabel.setAlignmentX(0.5F);
+
+        recipeTextArea.setEditable(false);
+        recipeTextArea.setColumns(20);
+        recipeTextArea.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        recipeTextArea.setLineWrap(true);
+        recipeTextArea.setRows(5);
+        recipePane.setViewportView(recipeTextArea);
+
+        modModeToggle.setText("Mod Mode Off");
+        modModeToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modModeToggleActionPerformed(evt);
+            }
+        });
+
+        modModeLabel.setText("Turn [Mod Mode On] to enable recipe modification.");
+
+        javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
+        contentPanel.setLayout(contentPanelLayout);
+        contentPanelLayout.setHorizontalGroup(
+            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contentPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addComponent(recipePane)
+                    .addComponent(recipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(recipesScrollPane)
+                    .addGroup(contentPanelLayout.createSequentialGroup()
+                        .addComponent(modModeToggle)
+                        .addGap(18, 18, 18)
+                        .addComponent(modModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        contentPanelLayout.setVerticalGroup(
+            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contentPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(recipesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(modModeToggle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(modModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(recipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(recipePane, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        mainPanel.add(contentPanel, java.awt.BorderLayout.CENTER);
+
+        bodyPanel.add(mainPanel, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
 
@@ -129,12 +276,23 @@ public class Application extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void InstructionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructionsActionPerformed
+        // Resource(s) used: https://www.youtube.com/watch?v=dCiAhqjlr5U
         try {
             Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "HelpDoc.txt");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.toString());
         }
     }//GEN-LAST:event_InstructionsActionPerformed
+
+    private void modModeToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modModeToggleActionPerformed
+        if (modModeToggle.isSelected()){
+            modModeToggle.setText("Mod Mode On");
+            modModeLabel.setText("Turn [Mod Mode Off] to disable recipe modification.");
+        } else {
+            modModeToggle.setText("Mod Mode Off");
+            modModeLabel.setText("Turn [Mod Mode On] to enable recipe modification.");
+        }
+    }//GEN-LAST:event_modModeToggleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,18 +331,32 @@ public class Application extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Instructions;
+    private javax.swing.JButton addIngredientButton;
+    private javax.swing.JTextField addIngredientTextField;
     private javax.swing.JPanel bodyPanel;
-    private javax.swing.JLabel friendHeaderLbl;
-    private javax.swing.JPanel friendPanel;
+    private javax.swing.JLabel chooseRecipeLabel;
+    private javax.swing.JPanel contentPanel;
+    private javax.swing.JScrollPane friendScrollPane;
+    private javax.swing.JLabel friendsLabel;
+    private javax.swing.JPanel friendsPanel;
     private javax.swing.JPanel ingredientsPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel selfHeaderLbl;
-    private javax.swing.JPanel selfIngredientsPanel;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JLabel modModeLabel;
+    private javax.swing.JToggleButton modModeToggle;
+    private javax.swing.JList<String> myIngredientList;
+    private javax.swing.JScrollPane myScrollPane;
+    private javax.swing.JLabel recipeLabel;
+    private javax.swing.JList<String> recipeList;
+    private javax.swing.JScrollPane recipePane;
+    private javax.swing.JTextArea recipeTextArea;
+    private javax.swing.JScrollPane recipesScrollPane;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JPanel searchPanel;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JLabel selfLabel;
     private javax.swing.JPanel selfPanel;
     // End of variables declaration//GEN-END:variables
 }
