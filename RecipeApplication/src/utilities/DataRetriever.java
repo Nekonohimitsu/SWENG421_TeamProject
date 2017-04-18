@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Server;
-import server.MessageAbs;
+import server.SendableMessage;
 
 public class DataRetriever extends Thread {
     private static DataRetriever instance = null;
@@ -69,8 +69,8 @@ public class DataRetriever extends Thread {
     public void run() {
         while(!s.isClosed()) {
             try {
-                MessageAbs incomingObject;
-                while ((incomingObject = (MessageAbs)is.readObject()) != null) {
+                SendableMessage incomingObject;
+                while ((incomingObject = (SendableMessage)is.readObject()) != null) {
                     System.out.println("Recieved Message: " + incomingObject.toString());
                     int clientID = incomingObject.getMessageSenderID();
                     switch(incomingObject.getMessageTitle()) {
