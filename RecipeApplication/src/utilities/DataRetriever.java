@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import server.Message;
 import server.Server;
 import server.SendableMessage;
 
@@ -48,20 +49,20 @@ public class DataRetriever extends Thread {
             Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void addIngredient(String ingredientName) {
+    public void addIngredient(RecipeIngredient ri) {
+        SendableMessage m = new Message(Server.ADD_INGREDIENT_TITLE, ri);
         try {
-            Recipe r = new Recipe(ingredientName);
-            os.writeObject(r);
+            os.writeObject(m);
         } catch (IOException ex) {
             Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void sendRecipeListToClient(ArrayList<Recipe> recipeList) {
+    private void sendRecipeListToClient(ArrayList<RecipeIF> recipeList) {
         c.displayRecipeList(recipeList);
     }
     
-    private void sendIngredientListToClient(ArrayList<String> ingList) {
+    private void sendIngredientListToClient(ArrayList<RecipeIngredient> ingList) {
         c.displayOthersIngredients(ingList);
     }
     
@@ -71,15 +72,14 @@ public class DataRetriever extends Thread {
             try {
                 SendableMessage incomingObject;
                 while ((incomingObject = (SendableMessage)is.readObject()) != null) {
-                    System.out.println("Recieved Message: " + incomingObject.toString());
                     int clientID = incomingObject.getMessageSenderID();
                     switch(incomingObject.getMessageTitle()) {
                         case Server.SEND_INGREDIENT_LIST_TITLE:
-                            ArrayList<String> ingList = (ArrayList) incomingObject.getMessageContent();
+                            ArrayList<RecipeIngredient> ingList = (ArrayList) incomingObject.getMessageContent();
                             sendIngredientListToClient(ingList);
                             break;
                         case Server.SEND_RECIPE_LIST_TITLE:
-                            ArrayList<Recipe> recipeList = (ArrayList)incomingObject.getMessageContent();
+                            ArrayList<RecipeIF> recipeList = (ArrayList)incomingObject.getMessageContent();
                             sendRecipeListToClient(recipeList);
                             break;
                         case Server.ADD_NEW_CLIENT_TITLE:

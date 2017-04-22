@@ -7,14 +7,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utilities.Recipe;
+import utilities.RecipeIngredientIF;
 
 class ServerThread extends Thread {
 
     private final Socket s;
     private final ObjectOutputStream os;
     private final ObjectInputStream is;
-    private final ArrayList<String> ingredientList = new ArrayList<>();
+    private final ArrayList<RecipeIngredientIF> ingredientList = new ArrayList<>();
     private final int ID;
     private final Scheduler scheduler;
 
@@ -30,7 +30,7 @@ class ServerThread extends Thread {
         return os;
     }
 
-    ArrayList<String> getIngredientList() {
+    ArrayList<RecipeIngredientIF> getIngredientList() {
         return ingredientList;
     }
 
@@ -42,16 +42,16 @@ class ServerThread extends Thread {
     public void run() {
         try {
             sendMessage(new Message(Server.ADD_NEW_CLIENT_TITLE, null, this));
-            Recipe r = new Recipe("Foo.");
-            ArrayList<Recipe> rl = new ArrayList<>();
-            rl.add(r);
-            Recipe r2;
-            ingredientList.add("Maybe.");
-            ingredientList.add("This...");
-            ingredientList.add("Works!?");
-            while ((r2 = (Recipe) is.readObject()) != null) {
-                sendMessage(new Message(Server.SEND_RECIPE_LIST_TITLE, rl, this));
-                sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
+            SendableMessage m;
+            while ((m = (SendableMessage) is.readObject()) != null) {
+                switch (m.getMessageTitle()) {
+                    case Server.ADD_INGREDIENT_TITLE:
+                        break;
+                    case Server.ADD_FILTER_TITLE:
+                        break;
+                    default:
+                        break;
+                }
             }
             sendMessage(new Message(Server.REMOVE_CLIENT_TITLE, null, this));
             is.close();

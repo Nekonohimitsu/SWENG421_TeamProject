@@ -78,10 +78,16 @@ public class Client extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        dr.addIngredient("Milk");
-        jTextField1.setText("Milk\n");
+        addIngredient("Milk", 1, "cup");
+        jTextField1.setText("Milk - 1 cup\n");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void addIngredient(String ingredientName, double amount, String amount_type) {
+        RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
+        //Add ri to display.
+        dr.addIngredient(ri);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -121,15 +127,16 @@ public class Client extends javax.swing.JFrame {
         });
     }
     
-    public void displayRecipeList(ArrayList<Recipe> rl) {
-        for (Recipe r : rl) {
+    public void displayRecipeList(ArrayList<RecipeIF> rl) {
+        for (RecipeIF r : rl) {
            jTextField1.setText(jTextField1.getText() + r.getName() + "\n");
         }
     }
     
-    public void displayOthersIngredients(ArrayList<String> il) {
-        for (String s : il) {
-           jTextField2.setText(jTextField2.getText() + s + "\n");
+    public void displayOthersIngredients(ArrayList<RecipeIngredient> il) {
+        for (RecipeIngredient ri : il) {
+           jTextField2.setText(jTextField2.getText() + ri.getIngredient()
+                   + " - " + ri.getAmount() + " " + ri.getAmountType() + "\n");
         }
     }
     

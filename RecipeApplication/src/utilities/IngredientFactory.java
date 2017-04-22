@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class IngredientFactory {
-    private static final HashMap<String, Ingredient> ingredientList = new HashMap();
+    private static final HashMap<String, IngredientIF> ingredientList = new HashMap();
     
     static void refreshIngredientList() {
         try {
@@ -17,7 +17,7 @@ public class IngredientFactory {
             while (rs.next()) {
                 int id = rs.getInt("ingredient_id");
                 String name = rs.getString("ingredient_name");
-                Ingredient pulledIngredient = new Ingredient(id, name);
+                IngredientIF pulledIngredient = new Ingredient(id, name);
                 if (!ingredientList.containsKey(name)) {
                     ingredientList.put(name, pulledIngredient);
                 }
@@ -27,7 +27,7 @@ public class IngredientFactory {
         }
     }
     
-    public Ingredient getIngredient(String ingredientName) {
+    public IngredientIF getIngredient(String ingredientName) {
         if (ingredientList.containsKey(ingredientName)) {
             return ingredientList.get(ingredientName);
         }

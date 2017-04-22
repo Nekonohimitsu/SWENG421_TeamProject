@@ -14,7 +14,9 @@ public class Server {
     public static final String ADD_NEW_CLIENT_TITLE = "AddNewClient";
     public static final String REMOVE_CLIENT_TITLE = "RemoveClient";
     public static final String SEND_RECIPE_LIST_TITLE = "UpdateRecipeList";
-    public static final String WELCOME_TITLE = "UpdatePanels";
+    public static final String WELCOME_TITLE = "UpdatePanels";    
+    public static final String ADD_INGREDIENT_TITLE = "AddNewIngredient";
+    public static final String ADD_FILTER_TITLE = "NewFilterTitle";
 
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(5000);
