@@ -1,7 +1,7 @@
 package utilities;
 
 public abstract class RecipeIngredientAbs implements RecipeIngredientIF{
-    private Ingredient ingredient;
+    private IngredientIF ingredient;
     private String amountType;
     private double amount;
     private IngredientFactory factory;

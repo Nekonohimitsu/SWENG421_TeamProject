@@ -62,7 +62,7 @@ public class DataRetriever extends Thread {
         c.displayRecipeList(recipeList);
     }
     
-    private void sendIngredientListToClient(ArrayList<RecipeIngredient> ingList) {
+    private void sendIngredientListToClient(ArrayList<RecipeIngredientIF> ingList) {
         c.displayOthersIngredients(ingList);
     }
     
@@ -75,7 +75,7 @@ public class DataRetriever extends Thread {
                     int clientID = incomingObject.getMessageSenderID();
                     switch(incomingObject.getMessageTitle()) {
                         case Server.SEND_INGREDIENT_LIST_TITLE:
-                            ArrayList<RecipeIngredient> ingList = (ArrayList) incomingObject.getMessageContent();
+                            ArrayList<RecipeIngredientIF> ingList = (ArrayList) incomingObject.getMessageContent();
                             sendIngredientListToClient(ingList);
                             break;
                         case Server.SEND_RECIPE_LIST_TITLE:

@@ -133,8 +133,8 @@ public class Client extends javax.swing.JFrame {
         }
     }
     
-    public void displayOthersIngredients(ArrayList<RecipeIngredient> il) {
-        for (RecipeIngredient ri : il) {
+    public void displayOthersIngredients(ArrayList<RecipeIngredientIF> il) {
+        for (RecipeIngredientIF ri : il) {
            jTextField2.setText(jTextField2.getText() + ri.getIngredient()
                    + " - " + ri.getAmount() + " " + ri.getAmountType() + "\n");
         }
