@@ -28,7 +28,7 @@ public class Server {
         }
     }
 
-    private static void removeClient(SendableMessageAbs m, ServerThread sendingClient) throws IOException {
+    private static void removeClient(SendableMessage m, ServerThread sendingClient) throws IOException {
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
@@ -40,7 +40,7 @@ public class Server {
         }
     }
 
-    private static void sendNewClient(SendableMessageAbs m, ServerThread sendingClient) throws IOException {
+    private static void sendNewClient(SendableMessage m, ServerThread sendingClient) throws IOException {
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
@@ -51,13 +51,13 @@ public class Server {
         }
     }
 
-    private static void sendRecipeList(SendableMessageAbs m, ServerThread sendingClient) throws IOException {
+    private static void sendRecipeList(SendableMessage m, ServerThread sendingClient) throws IOException {
         for (ServerThread client : listOfClients) {
             client.getOutputStream().writeObject(m);
         }
     }
 
-    private static void sendIngredientList(SendableMessageAbs m, ServerThread sendingClient) throws IOException {
+    private static void sendIngredientList(SendableMessage m, ServerThread sendingClient) throws IOException {
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
@@ -65,7 +65,7 @@ public class Server {
         }
     }
 
-    static void sendMessage(SendableMessageAbs m) throws IOException {
+    static void sendMessage(SendableMessage m) throws IOException {
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
         if (sendingClient != null) {
             switch (m.getMessageTitle()) {

@@ -62,7 +62,7 @@ class ServerThread extends Thread {
         }
     }
 
-    private void sendMessage(SendableMessageAbs m) throws InterruptedException, IOException {
+    private void sendMessage(SendableMessage m) throws InterruptedException, IOException {
         scheduler.enter();
         try {
             //It's our turn if we're here.
