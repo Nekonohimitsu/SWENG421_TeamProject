@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
  *
  * @author Troyana
  */
-public class Application extends javax.swing.JFrame {
+public class Client extends javax.swing.JFrame {
 
     /**
      * Creates new form Application
      */
-    public Application() {
+    public Client() {
         initComponents();
     }
 
@@ -30,7 +30,6 @@ public class Application extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         bodyPanel = new javax.swing.JPanel();
         ingredientsPanel = new javax.swing.JPanel();
@@ -40,6 +39,7 @@ public class Application extends javax.swing.JFrame {
         addIngredientButton = new javax.swing.JButton();
         myScrollPane = new javax.swing.JScrollPane();
         myIngredientList = new javax.swing.JList<>();
+        removeIngLabel = new javax.swing.JLabel();
         friendsPanel = new javax.swing.JPanel();
         friendsLabel = new javax.swing.JLabel();
         friendScrollPane = new javax.swing.JScrollPane();
@@ -55,7 +55,6 @@ public class Application extends javax.swing.JFrame {
         recipePane = new javax.swing.JScrollPane();
         recipeTextArea = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
-        modModeToggle = new javax.swing.JToggleButton();
         modModeLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu = new javax.swing.JMenu();
@@ -72,12 +71,16 @@ public class Application extends javax.swing.JFrame {
 
         bodyPanel.setLayout(new java.awt.BorderLayout());
 
+        ingredientsPanel.setBackground(new java.awt.Color(47, 68, 54));
         ingredientsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        ingredientsPanel.setMinimumSize(new java.awt.Dimension(200, 32));
-        ingredientsPanel.setPreferredSize(new java.awt.Dimension(200, 674));
+        ingredientsPanel.setMinimumSize(new java.awt.Dimension(300, 32));
+        ingredientsPanel.setPreferredSize(new java.awt.Dimension(300, 674));
         ingredientsPanel.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
 
+        selfPanel.setBackground(new java.awt.Color(137, 148, 139));
+
         selfLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        selfLabel.setForeground(new java.awt.Color(47, 68, 54));
         selfLabel.setText("My Ingredients");
 
         addIngredientButton.setText("+");
@@ -87,7 +90,12 @@ public class Application extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        myIngredientList.setSelectionBackground(new java.awt.Color(159, 183, 173));
         myScrollPane.setViewportView(myIngredientList);
+
+        removeIngLabel.setForeground(new java.awt.Color(167, 198, 167));
+        removeIngLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        removeIngLabel.setText("double-click to remove");
 
         javax.swing.GroupLayout selfPanelLayout = new javax.swing.GroupLayout(selfPanel);
         selfPanel.setLayout(selfPanelLayout);
@@ -96,12 +104,13 @@ public class Application extends javax.swing.JFrame {
             .addGroup(selfPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                    .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                     .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(selfPanelLayout.createSequentialGroup()
                         .addComponent(addIngredientTextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addIngredientButton)))
+                        .addComponent(addIngredientButton))
+                    .addComponent(removeIngLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         selfPanelLayout.setVerticalGroup(
@@ -114,35 +123,42 @@ public class Application extends javax.swing.JFrame {
                     .addComponent(addIngredientTextField)
                     .addComponent(addIngredientButton, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
                 .addGap(13, 13, 13)
-                .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removeIngLabel)
+                .addGap(6, 6, 6))
         );
 
         ingredientsPanel.add(selfPanel);
 
+        friendsPanel.setBackground(new java.awt.Color(137, 148, 139));
+
+        friendsLabel.setBackground(new java.awt.Color(159, 183, 173));
         friendsLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        friendsLabel.setForeground(new java.awt.Color(47, 68, 54));
         friendsLabel.setText("Also in this session:");
 
-        friendScrollPane.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        friendScrollPane.setBackground(new java.awt.Color(159, 183, 173));
+        friendScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout friendsPanelLayout = new javax.swing.GroupLayout(friendsPanel);
         friendsPanel.setLayout(friendsPanelLayout);
         friendsPanelLayout.setHorizontalGroup(
             friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, friendsPanelLayout.createSequentialGroup()
+            .addGroup(friendsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(friendScrollPane)
-                    .addComponent(friendsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+                .addGroup(friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(friendScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .addComponent(friendsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
                 .addContainerGap())
         );
         friendsPanelLayout.setVerticalGroup(
             friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(friendsPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(10, 10, 10)
                 .addComponent(friendsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(friendScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addComponent(friendScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -152,8 +168,12 @@ public class Application extends javax.swing.JFrame {
 
         mainPanel.setLayout(new java.awt.BorderLayout());
 
+        searchPanel.setBackground(new java.awt.Color(198, 222, 201));
+
         searchTextField.setText("Enter recipe name");
 
+        searchButton.setBackground(new java.awt.Color(137, 148, 139));
+        searchButton.setForeground(new java.awt.Color(218, 240, 218));
         searchButton.setText("Search");
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
@@ -162,7 +182,7 @@ public class Application extends javax.swing.JFrame {
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+                .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton)
                 .addContainerGap())
@@ -172,14 +192,17 @@ public class Application extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                    .addComponent(searchTextField))
+                    .addComponent(searchTextField)
+                    .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         mainPanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
 
+        contentPanel.setBackground(new java.awt.Color(198, 222, 201));
+
         chooseRecipeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        chooseRecipeLabel.setForeground(new java.awt.Color(47, 68, 54));
         chooseRecipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         chooseRecipeLabel.setText("Recipe List");
         chooseRecipeLabel.setToolTipText("");
@@ -190,9 +213,11 @@ public class Application extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        recipeList.setSelectionBackground(new java.awt.Color(159, 183, 173));
         recipesScrollPane.setViewportView(recipeList);
 
         recipeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        recipeLabel.setForeground(new java.awt.Color(47, 68, 54));
         recipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         recipeLabel.setText("Recipe");
         recipeLabel.setAlignmentX(0.5F);
@@ -202,16 +227,14 @@ public class Application extends javax.swing.JFrame {
         recipeTextArea.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         recipeTextArea.setLineWrap(true);
         recipeTextArea.setRows(5);
+        recipeTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         recipePane.setViewportView(recipeTextArea);
 
-        modModeToggle.setText("Mod Mode Off");
-        modModeToggle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modModeToggleActionPerformed(evt);
-            }
-        });
+        jSeparator1.setForeground(new java.awt.Color(221, 237, 221));
 
-        modModeLabel.setText("Turn [Mod Mode On] to enable recipe modification.");
+        modModeLabel.setForeground(new java.awt.Color(64, 83, 71));
+        modModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        modModeLabel.setText("double-click to edit recipe");
 
         javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
         contentPanel.setLayout(contentPanelLayout);
@@ -221,27 +244,21 @@ public class Application extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addComponent(recipePane)
+                    .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE)
                     .addComponent(recipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(recipesScrollPane)
-                    .addGroup(contentPanelLayout.createSequentialGroup()
-                        .addComponent(modModeToggle)
-                        .addGap(18, 18, 18)
-                        .addComponent(modModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)))
+                    .addComponent(modModeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPanelLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recipesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(modModeToggle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(modModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(modModeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -284,16 +301,6 @@ public class Application extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_InstructionsActionPerformed
 
-    private void modModeToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modModeToggleActionPerformed
-        if (modModeToggle.isSelected()){
-            modModeToggle.setText("Mod Mode On");
-            modModeLabel.setText("Turn [Mod Mode Off] to disable recipe modification.");
-        } else {
-            modModeToggle.setText("Mod Mode Off");
-            modModeLabel.setText("Turn [Mod Mode On] to enable recipe modification.");
-        }
-    }//GEN-LAST:event_modModeToggleActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -311,20 +318,21 @@ public class Application extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>     
         //</editor-fold>     
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Application().setVisible(true);
+                new Client().setVisible(true);
             } 
         });
     }
@@ -345,7 +353,6 @@ public class Application extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel modModeLabel;
-    private javax.swing.JToggleButton modModeToggle;
     private javax.swing.JList<String> myIngredientList;
     private javax.swing.JScrollPane myScrollPane;
     private javax.swing.JLabel recipeLabel;
@@ -353,6 +360,7 @@ public class Application extends javax.swing.JFrame {
     private javax.swing.JScrollPane recipePane;
     private javax.swing.JTextArea recipeTextArea;
     private javax.swing.JScrollPane recipesScrollPane;
+    private javax.swing.JLabel removeIngLabel;
     private javax.swing.JButton searchButton;
     private javax.swing.JPanel searchPanel;
     private javax.swing.JTextField searchTextField;
