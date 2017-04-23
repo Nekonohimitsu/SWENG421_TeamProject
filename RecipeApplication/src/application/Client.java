@@ -1,29 +1,32 @@
-import java.sql.*;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.accessibility.Accessible;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package application;
 
-/**
- *
- * @author Troyana
- */
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import utilities.*;
+
 public class Client extends javax.swing.JFrame {
+
+    private static DataRetriever dr;
+    private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
 
     /**
      * Creates new form Application
      */
     public Client() {
         initComponents();
+        dr = DataRetriever.getInstance(this);
+        dr.start();
+        IngredientFactory.getFactory().refreshIngredientList();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dr.shutdown();
+            }
+        });
     }
 
     /**
@@ -88,6 +91,11 @@ public class Client extends javax.swing.JFrame {
         selfLabel.setText("My Ingredients");
 
         addIngredientButton.setText("+");
+        addIngredientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addIngredientButtonActionPerformed(evt);
+            }
+        });
 
         myIngredientList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "No ingredients in list..." };
@@ -305,6 +313,29 @@ public class Client extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_InstructionsActionPerformed
 
+    private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngredientButtonActionPerformed
+        String ingredient = addIngredientTextField.getText();
+        //amount? amount type?
+        addIngredient(ingredient, 1.0, "cup");
+    }//GEN-LAST:event_addIngredientButtonActionPerformed
+
+    private void addIngredient(String ingredientName, double amount, String amount_type) {
+        if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
+            RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
+            if (!ri.getIngredient().equals("")) {
+                myIngredients.add(ri);
+                DefaultListModel lm = new DefaultListModel();
+                for (RecipeIngredientIF ingredient : myIngredients) {
+                    lm.addElement(ingredient.toString());
+                }
+                myIngredientList.setModel(lm);
+                dr.addIngredient(ri);
+            }
+        } else {
+            //Display ingredient doesn't exist error.
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -337,8 +368,29 @@ public class Client extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Client().setVisible(true);
-            } 
+            }
         });
+    }
+
+    public void displayRecipeList(ArrayList<RecipeIF> rl) {
+        DefaultListModel lm = new DefaultListModel();
+        for (RecipeIF r : rl) {
+            lm.addElement(r.getName());
+        }
+        recipeList.setModel(lm);
+    }
+
+    public void addPanel(DynamicPanel p) {
+        friendsPanel.setLayout(new java.awt.BorderLayout());
+        friendsPanel.add(p);
+        friendsPanel.revalidate();
+        friendsPanel.repaint();
+    }
+
+    public void removePanel(DynamicPanel p) {
+        friendsPanel.remove(p);
+        friendsPanel.revalidate();
+        friendsPanel.repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

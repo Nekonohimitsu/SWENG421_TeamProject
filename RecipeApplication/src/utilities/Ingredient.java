@@ -1,14 +1,9 @@
 package utilities;
 
-public class Ingredient {
-    private String name;
-    private int id;
-    
-    private Ingredient() { }
-    public Ingredient(int id, String name) { 
-        this.name = name;
-        this.id = id;
+import java.io.Serializable;
+
+public class Ingredient extends IngredientAbs implements Serializable{
+    Ingredient(int id, String name) { 
+       super(id, name);
     }
-    public String getName() { return this.name; }
-    public int getID() { return this.id; }
 }
