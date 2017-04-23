@@ -53,6 +53,15 @@ public class DataRetriever extends Thread {
             }
         }
     }
+    
+    public void removeIngredient(RecipeIngredientIF ri) {
+        SendableMessage m = new Message(Server.RMV_INGREDIENT_TITLE, ri);
+        try {
+            os.writeObject(m);
+        } catch (IOException ex) {
+            Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void addIngredient(RecipeIngredientIF ri) {
         SendableMessage m = new Message(Server.ADD_INGREDIENT_TITLE, ri);
@@ -91,6 +100,8 @@ public class DataRetriever extends Thread {
                             break;
                         case Server.SEND_RECIPE_LIST_TITLE:
                             ArrayList<RecipeIF> recipeList = (ArrayList) incomingObject.getMessageContent();
+                            for (RecipeIF r : recipeList)
+                                System.out.println(r);
                             sendRecipeListToClient(recipeList);
                             break;
                         case Server.ADD_NEW_CLIENT_TITLE:

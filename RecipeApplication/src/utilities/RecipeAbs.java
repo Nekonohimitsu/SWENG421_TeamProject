@@ -12,7 +12,7 @@ public abstract class RecipeAbs implements RecipeIF{
     private String cookTime;
     private ArrayList<RecipeIngredientIF> baseIngredients = new ArrayList<>();
     
-    private RecipeAbs() {}
+    public RecipeAbs() {}
     public RecipeAbs(String name, String directions, ArrayList<RecipeIngredientIF> baseIngredients) {
         this.name = name;
         this.directions = directions;
@@ -120,5 +120,10 @@ public abstract class RecipeAbs implements RecipeIF{
     @Override
     public RecipeIngredientIF getAddedIngredient() {
         return null;
+    }
+    
+    @Override
+    public String toString() {
+        return name + " - Prep Time: " + prepTime + " / CookTime: " + cookTime;
     }
 }

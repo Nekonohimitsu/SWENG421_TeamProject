@@ -23,4 +23,6 @@ public interface RecipeIF {
     void setPrepTime(String prepTime);
     void setCookTime(String cookTime);
     RecipeIF addIngredient(RecipeIngredientIF ri);
+    @Override
+    String toString();
 }

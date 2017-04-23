@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import utilities.*;
 
@@ -103,6 +104,11 @@ public class Client extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         myIngredientList.setSelectionBackground(new java.awt.Color(159, 183, 173));
+        myIngredientList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                myIngredientListMouseClicked(evt);
+            }
+        });
         myScrollPane.setViewportView(myIngredientList);
 
         removeIngLabel.setForeground(new java.awt.Color(167, 198, 167));
@@ -319,16 +325,31 @@ public class Client extends javax.swing.JFrame {
         addIngredient(ingredient, 1.0, "cup");
     }//GEN-LAST:event_addIngredientButtonActionPerformed
 
+    private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
+        if (evt.getClickCount() > 1) {
+            //Double clicked
+            int index = myIngredientList.getSelectedIndex();
+            RecipeIngredientIF ri = myIngredients.get(index);
+            myIngredients.remove(index);
+            modifyList(myIngredientList, myIngredients);
+            dr.removeIngredient(ri);
+        }
+    }//GEN-LAST:event_myIngredientListMouseClicked
+    
+    private void modifyList(JList list, ArrayList info) {
+        DefaultListModel lm = new DefaultListModel();
+        for (Object o : info) {
+            lm.addElement(o);
+        }
+        list.setModel(lm);
+    }
+    
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
             RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
             if (!ri.getIngredient().equals("")) {
                 myIngredients.add(ri);
-                DefaultListModel lm = new DefaultListModel();
-                for (RecipeIngredientIF ingredient : myIngredients) {
-                    lm.addElement(ingredient.toString());
-                }
-                myIngredientList.setModel(lm);
+                modifyList(myIngredientList, myIngredients);
                 dr.addIngredient(ri);
             }
         } else {
@@ -373,11 +394,7 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void displayRecipeList(ArrayList<RecipeIF> rl) {
-        DefaultListModel lm = new DefaultListModel();
-        for (RecipeIF r : rl) {
-            lm.addElement(r.getName());
-        }
-        recipeList.setModel(lm);
+        modifyList(recipeList, rl);
     }
 
     public void addPanel(DynamicPanel p) {
