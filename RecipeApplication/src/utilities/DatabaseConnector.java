@@ -8,9 +8,8 @@ import java.util.logging.Logger;
 public class DatabaseConnector {
     private static Connection connector = null;
     private DatabaseConnector() {} // Singleton Pattern.
-    
-    //Package privacy.
-    static Connection getConnector() {
+
+    public static Connection getConnector() {
         if (connector == null) {
             try {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -23,7 +22,6 @@ public class DatabaseConnector {
                 properties.put("user","Troyana");
                 properties.put("password", "WeAreGraduating");
                 connector = DriverManager.getConnection("jdbc:derby://localhost:1527/recipe_application", properties);
-                IngredientFactory.refreshIngredientList();
             } catch(SQLException e){
                 System.err.println(e);
             }  

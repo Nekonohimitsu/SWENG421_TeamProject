@@ -44,8 +44,12 @@ class ServerThread extends Thread {
             sendMessage(new Message(Server.ADD_NEW_CLIENT_TITLE, null, this));
             SendableMessage m;
             while ((m = (SendableMessage) is.readObject()) != null) {
+                System.out.println("Got message: " + m.getMessageTitle());
                 switch (m.getMessageTitle()) {
                     case Server.ADD_INGREDIENT_TITLE:
+                        RecipeIngredientIF newIngredient = (RecipeIngredientIF)m.getMessageContent();
+                        ingredientList.add(newIngredient);
+                        sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
                         break;
                     case Server.ADD_FILTER_TITLE:
                         break;

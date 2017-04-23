@@ -7,8 +7,18 @@ import java.util.logging.Logger;
 
 public class IngredientFactory {
     private static final HashMap<String, IngredientIF> ingredientList = new HashMap();
+    private static IngredientFactory instance;
     
-    static void refreshIngredientList() {
+    private IngredientFactory() { }
+    
+    public static IngredientFactory getFactory() { 
+        if (instance == null) {
+            instance = new IngredientFactory();
+        }
+        return instance;
+    }
+    
+    public void refreshIngredientList() {
         try {
             //Pull ingredients from database. Store them into an array.
             //This occurs once at the start of the program.

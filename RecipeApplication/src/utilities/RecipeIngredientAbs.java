@@ -1,16 +1,15 @@
 package utilities;
 
 public abstract class RecipeIngredientAbs implements RecipeIngredientIF{
-    private IngredientIF ingredient;
+    private String ingredient;
     private String amountType;
     private double amount;
-    private IngredientFactory factory;
     
     private RecipeIngredientAbs() {}
     public RecipeIngredientAbs(String ingredientName, double amount, String amountType) {
         this.amountType = amountType;
         this.amount = amount;
-        this.ingredient = factory.getIngredient(ingredientName);
+        this.ingredient = ingredientName;
     }
     
     @Override
@@ -19,7 +18,7 @@ public abstract class RecipeIngredientAbs implements RecipeIngredientIF{
     }
     @Override
     public void setIngredient(String ingredientName){
-        this.ingredient = factory.getIngredient(ingredientName);
+        this.ingredient = ingredientName;
     }
     @Override
     public void setAmountType(String amountType){
@@ -35,6 +34,11 @@ public abstract class RecipeIngredientAbs implements RecipeIngredientIF{
     }
     @Override
     public String getIngredient() {
-        return ingredient.getName();
+        return ingredient;
+    }
+    
+    @Override
+    public String toString() {
+        return ingredient + " - " + amount + " " + amountType;
     }
 }
