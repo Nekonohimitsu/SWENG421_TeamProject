@@ -8,9 +8,8 @@ import java.util.logging.Logger;
 public class DatabaseConnector {
     private static Connection connector = null;
     private DatabaseConnector() {} // Singleton Pattern.
-    
-    //Package privacy.
-    static Connection getConnector() {
+
+    public static Connection getConnector() {
         if (connector == null) {
             try {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
