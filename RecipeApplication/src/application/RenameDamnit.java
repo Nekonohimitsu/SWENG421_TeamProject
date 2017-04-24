@@ -8,17 +8,17 @@ import utilities.Recipe;
 import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
 
-public class ModFrame extends javax.swing.JFrame {
+public class RenameDamnit extends javax.swing.JFrame {
     private final RecipeIF recipeBeingModified;
     private final ArrayList<RecipeIngredientIF> ingredients;
     private final DefaultListModel storedModel;
-    private static ModFrame instance = null;
+    private static RenameDamnit instance = null;
     private final Client client;
     /**
      * Creates new form modFrame
      * @param recipe
      */
-    private ModFrame(RecipeIF recipe, Client c) {
+    private RenameDamnit(RecipeIF recipe, Client c) {
         recipeBeingModified = recipe;
         client = c;
         initComponents();
@@ -34,9 +34,9 @@ public class ModFrame extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
-    public static ModFrame getInstance(RecipeIF recipe, Client c) {
+    public static RenameDamnit getInstance(RecipeIF recipe, Client c) {
         if (instance == null) {
-            instance = new ModFrame(recipe, c);
+            instance = new RenameDamnit(recipe, c);
         } 
         return instance;
     }
