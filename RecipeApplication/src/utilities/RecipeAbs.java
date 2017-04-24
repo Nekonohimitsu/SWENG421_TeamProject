@@ -12,7 +12,7 @@ public abstract class RecipeAbs implements RecipeIF{
     private String cookTime;
     private ArrayList<RecipeIngredientIF> baseIngredients = new ArrayList<>();
     
-    public RecipeAbs() {}
+    private RecipeAbs() {}
     public RecipeAbs(String name, String directions, ArrayList<RecipeIngredientIF> baseIngredients) {
         this.name = name;
         this.directions = directions;

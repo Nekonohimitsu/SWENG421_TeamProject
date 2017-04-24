@@ -100,8 +100,6 @@ public class DataRetriever extends Thread {
                             break;
                         case Server.SEND_RECIPE_LIST_TITLE:
                             ArrayList<RecipeIF> recipeList = (ArrayList) incomingObject.getMessageContent();
-                            for (RecipeIF r : recipeList)
-                                System.out.println(r);
                             sendRecipeListToClient(recipeList);
                             break;
                         case Server.ADD_NEW_CLIENT_TITLE:

@@ -79,8 +79,6 @@ public class Server {
 
     private static void sendRecipeList(SendableMessage m) throws IOException {
        SendableMessage recipeMessage = new Message(m.getMessageTitle(), listOfRecipes);
-       for (RecipeIF r : listOfRecipes)
-           System.out.println(r);
         for (ServerThread client : listOfClients) {
             client.getOutputStream().writeObject(recipeMessage);
         }

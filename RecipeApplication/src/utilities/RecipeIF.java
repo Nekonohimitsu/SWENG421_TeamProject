@@ -1,8 +1,9 @@
 package utilities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public interface RecipeIF {
+public interface RecipeIF extends Serializable {
     String getName();
     String getDesc();
     String getDirections();
