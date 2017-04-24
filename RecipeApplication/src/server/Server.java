@@ -97,16 +97,23 @@ public class Server {
     
     private static void checkAndModifyRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
         RecipeIF newRecipe = (RecipeIF) m.getMessageContent();
+        System.out.println("Got: " + newRecipe);
+        boolean response = true;
         for (RecipeIF r : listOfRecipes) {
             if (r.getName().equals(newRecipe.getName())) {
-                // Can't save it. Send error.
-                SendableMessage errorMessage = new Message(MODIFY_RECIPE_RESPONSE, false);
-                sendingClient.getOutputStream().writeObject(errorMessage);
-            }
+                response = false;
+                break;
+            } 
+        }
+        SendableMessage responseMessage = new Message(MODIFY_RECIPE_RESPONSE, response);
+        sendingClient.getOutputStream().writeObject(responseMessage);
+        if (response) {
+            listOfRecipes.add(newRecipe);
         }
     }
 
     static void sendMessage(SendableMessage m) throws IOException {
+        System.out.println("Got message: " + m.getMessageTitle());
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
         if (sendingClient != null) {
             switch (m.getMessageTitle()) {
@@ -189,5 +196,15 @@ public class Server {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ingredients;
+    }
+    
+    private static void addRecipeToDatabase(RecipeIF r) {
+        Statement stmt;
+        try {
+            stmt = connector.createStatement();
+            stmt.executeQuery("");
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

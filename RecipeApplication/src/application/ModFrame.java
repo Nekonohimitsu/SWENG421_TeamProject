@@ -245,6 +245,8 @@ public class ModFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "This recipe name already exists. Please choose another name.");
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "You didn't change anything.");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
