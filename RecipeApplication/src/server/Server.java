@@ -35,6 +35,8 @@ public class Server {
     public static final String ADD_INGREDIENT_TITLE = "AddNewIngredient";
     public static final String RMV_INGREDIENT_TITLE = "RemoveIngredient";
     public static final String ADD_FILTER_TITLE = "NewFilterTitle";
+    public static final String MODIFY_RECIPE = "ModifyRecipe";
+    public static final String MODIFY_RECIPE_RESPONSE = "ModifyRecipeResponse";
 
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(5000);
@@ -92,6 +94,17 @@ public class Server {
             }
         }
     }
+    
+    private static void checkAndModifyRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
+        RecipeIF newRecipe = (RecipeIF) m.getMessageContent();
+        for (RecipeIF r : listOfRecipes) {
+            if (r.getName().equals(newRecipe.getName())) {
+                // Can't save it. Send error.
+                SendableMessage errorMessage = new Message(MODIFY_RECIPE_RESPONSE, false);
+                sendingClient.getOutputStream().writeObject(errorMessage);
+            }
+        }
+    }
 
     static void sendMessage(SendableMessage m) throws IOException {
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
@@ -109,6 +122,8 @@ public class Server {
                 case SEND_RECIPE_LIST_TITLE:
                     sendRecipeList(m);
                     break;
+                case MODIFY_RECIPE:
+                    checkAndModifyRecipe(m, sendingClient);
                 default:
                     break;
             }

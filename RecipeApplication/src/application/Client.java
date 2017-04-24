@@ -4,6 +4,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -14,6 +16,7 @@ public class Client extends javax.swing.JFrame {
     private static DataRetriever dr;
     private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
     private ArrayList<RecipeIF> currentRecipes = new ArrayList<>();
+    private boolean serverResponse = false;
 
     /**
      * Creates new form Application
@@ -345,8 +348,8 @@ public class Client extends javax.swing.JFrame {
         if (evt.getClickCount() > 1) {//double clicked
             int index = recipeList.getSelectedIndex();
             RecipeIF selectedRecipe = currentRecipes.get(index);
-            ModFrame modificationFrame = new ModFrame(selectedRecipe);
-            
+            ModFrame modificationFrame = ModFrame.getInstance(selectedRecipe, this);
+            modificationFrame.setVisible(true);
         }
     }//GEN-LAST:event_recipeListMouseClicked
     
@@ -423,6 +426,22 @@ public class Client extends javax.swing.JFrame {
         friendsPanel.remove(p);
         friendsPanel.revalidate();
         friendsPanel.repaint();
+    }
+    
+    public boolean storeRecipe(RecipeIF r) {
+        dr.sendRecipe(r);
+        synchronized(this) {
+            try {
+                this.wait();
+                return serverResponse;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+    public void setResponse(boolean response) {
+        serverResponse = response;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

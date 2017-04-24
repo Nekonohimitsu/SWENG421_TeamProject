@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
 
 class ServerThread extends Thread {
@@ -54,6 +55,9 @@ class ServerThread extends Thread {
                         RecipeIngredientIF ingredientToRemove = (RecipeIngredientIF)m.getMessageContent();
                         ingredientList.remove(ingredientToRemove);
                         sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
+                    case Server.MODIFY_RECIPE:
+                        //Transfer request to server. 
+                        sendMessage(new Message(Server.MODIFY_RECIPE, m.getMessageContent(), this));
                     case Server.ADD_FILTER_TITLE:
                         break;
                     default:

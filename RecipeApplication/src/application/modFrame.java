@@ -1,28 +1,45 @@
 package application;
 
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import utilities.Recipe;
 import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
 
 public class ModFrame extends javax.swing.JFrame {
     private final RecipeIF recipeBeingModified;
+    private final ArrayList<RecipeIngredientIF> ingredients;
+    private final DefaultListModel storedModel;
+    private static ModFrame instance = null;
+    private final Client client;
     /**
      * Creates new form modFrame
      * @param recipe
      */
-    public ModFrame(RecipeIF recipe) {
+    private ModFrame(RecipeIF recipe, Client c) {
         recipeBeingModified = recipe;
+        client = c;
         initComponents();
         jTextField1.setText(recipeBeingModified.getName());
         jTextField2.setText(recipeBeingModified.getPrepTime());
         cookTime.setText(recipeBeingModified.getCookTime());
-        DefaultListModel lm = new DefaultListModel();
+        ingredients = recipeBeingModified.getIngredients();
+        storedModel = new DefaultListModel();
         for (RecipeIngredientIF ri : recipeBeingModified.getIngredients())
-            lm.addElement(ri);
-        jList1.setModel(lm);
+            storedModel.addElement(ri);
+        jList1.setModel(storedModel);
         jTextArea1.setText(recipeBeingModified.getDirections());
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
+    
+    public static ModFrame getInstance(RecipeIF recipe, Client c) {
+        if (instance == null) {
+            instance = new ModFrame(recipe, c);
+        } 
+        return instance;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,6 +119,11 @@ public class ModFrame extends javax.swing.JFrame {
         jButton2.setText("Cancel");
 
         jButton3.setText("Save");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout modificationPanelLayout = new javax.swing.GroupLayout(modificationPanel);
         modificationPanel.setLayout(modificationPanelLayout);
@@ -202,6 +224,29 @@ public class ModFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //Save Button - we want to make sure they change the name of the recipe if they modify it.
+        if (!jTextField1.getText().equals(recipeBeingModified.getName()) ||
+            !jTextField2.getText().equals(recipeBeingModified.getPrepTime()) ||
+            !cookTime.getText().equals(recipeBeingModified.getCookTime()) ||
+            !jTextArea1.getText().equals(recipeBeingModified.getDirections()) ||
+            !storedModel.equals(jList1.getModel())) {
+            if (jTextField1.getText().equals(recipeBeingModified.getName())) {
+                //Request user to modify the name because changes have been made.
+                JOptionPane.showMessageDialog(null, "Please modify the name of the recipe if you are changing it.");
+            } else {
+                RecipeIF newRecipe = new Recipe(jTextField1.getText(),
+                    jTextArea1.getText(), jTextField2.getText(), cookTime.getText(), ingredients);
+                if (client.storeRecipe(newRecipe)) {
+                    //Returns true if it can store to database. Otherwise, name already exists.
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "This recipe name already exists. Please choose another name.");
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
