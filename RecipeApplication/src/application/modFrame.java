@@ -1,23 +1,26 @@
 package application;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import javax.swing.DefaultListModel;
+import utilities.RecipeIF;
+import utilities.RecipeIngredientIF;
 
-
-/**
- *
- * @author iimax
- */
 public class ModFrame extends javax.swing.JFrame {
-
+    private final RecipeIF recipeBeingModified;
     /**
      * Creates new form modFrame
+     * @param recipe
      */
-    public ModFrame() {
+    public ModFrame(RecipeIF recipe) {
+        recipeBeingModified = recipe;
         initComponents();
+        jTextField1.setText(recipeBeingModified.getName());
+        jTextField2.setText(recipeBeingModified.getPrepTime());
+        cookTime.setText(recipeBeingModified.getCookTime());
+        DefaultListModel lm = new DefaultListModel();
+        for (RecipeIngredientIF ri : recipeBeingModified.getIngredients())
+            lm.addElement(ri);
+        jList1.setModel(lm);
+        jTextArea1.setText(recipeBeingModified.getDirections());
     }
 
     /**
@@ -88,6 +91,11 @@ public class ModFrame extends javax.swing.JFrame {
         jLabel1.setText("Recipe Modification");
 
         jButton1.setText("+");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jScrollPane2.setViewportView(jList1);
 
@@ -191,41 +199,10 @@ public class ModFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cookLabel;
