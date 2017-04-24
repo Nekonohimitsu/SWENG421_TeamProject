@@ -13,6 +13,7 @@ public class Client extends javax.swing.JFrame {
 
     private static DataRetriever dr;
     private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
+    private ArrayList<RecipeIF> currentRecipes = new ArrayList<>();
 
     /**
      * Creates new form Application
@@ -232,6 +233,11 @@ public class Client extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         recipeList.setSelectionBackground(new java.awt.Color(159, 183, 173));
+        recipeList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recipeListMouseClicked(evt);
+            }
+        });
         recipesScrollPane.setViewportView(recipeList);
 
         recipeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -326,8 +332,7 @@ public class Client extends javax.swing.JFrame {
     }//GEN-LAST:event_addIngredientButtonActionPerformed
 
     private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
-        if (evt.getClickCount() > 1) {
-            //Double clicked
+        if (evt.getClickCount() > 1) { //Double clicked
             int index = myIngredientList.getSelectedIndex();
             RecipeIngredientIF ri = myIngredients.get(index);
             myIngredients.remove(index);
@@ -335,6 +340,15 @@ public class Client extends javax.swing.JFrame {
             dr.removeIngredient(ri);
         }
     }//GEN-LAST:event_myIngredientListMouseClicked
+
+    private void recipeListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recipeListMouseClicked
+        if (evt.getClickCount() > 1) {//double clicked
+            int index = recipeList.getSelectedIndex();
+            RecipeIF selectedRecipe = currentRecipes.get(index);
+            ModFrame modificationFrame = new ModFrame(selectedRecipe);
+            
+        }
+    }//GEN-LAST:event_recipeListMouseClicked
     
     private void modifyList(JList list, ArrayList info) {
         DefaultListModel lm = new DefaultListModel();
@@ -394,6 +408,7 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void displayRecipeList(ArrayList<RecipeIF> rl) {
+        currentRecipes = rl;
         modifyList(recipeList, rl);
     }
 
