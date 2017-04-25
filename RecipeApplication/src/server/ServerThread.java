@@ -78,7 +78,6 @@ class ServerThread extends Thread {
         try {
             //It's our turn if we're here.
             Server.sendMessage(m);
-            //always request to update the recipes after sending a message.
             Server.sendMessage(new Message(Server.SEND_RECIPE_LIST_TITLE, null, this));
         } finally {
             scheduler.done();//Tell scheduler we've sent our message.

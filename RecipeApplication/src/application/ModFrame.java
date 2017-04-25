@@ -1,5 +1,7 @@
 package application;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -7,6 +9,7 @@ import javax.swing.JOptionPane;
 import utilities.Recipe;
 import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
+import utilities.Utility;
 
 public class ModFrame extends javax.swing.JFrame {
     private final RecipeIF recipeBeingModified;
@@ -26,17 +29,20 @@ public class ModFrame extends javax.swing.JFrame {
         jTextField2.setText(recipeBeingModified.getPrepTime());
         cookTime.setText(recipeBeingModified.getCookTime());
         ingredients = recipeBeingModified.getIngredients();
-        storedModel = new DefaultListModel();
-        for (RecipeIngredientIF ri : recipeBeingModified.getIngredients())
-            storedModel.addElement(ri);
-        jList1.setModel(storedModel);
+        storedModel = Utility.modifyList(jList1, ingredients);
         jTextArea1.setText(recipeBeingModified.getDirections());
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     public static ModFrame getInstance(RecipeIF recipe, Client c) {
         if (instance == null) {
             instance = new ModFrame(recipe, c);
+            instance.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            instance.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                instance = null;
+            }
+        });
         } 
         return instance;
     }
@@ -227,29 +233,40 @@ public class ModFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Save Button - we want to make sure they change the name of the recipe if they modify it.
-        if (!jTextField1.getText().equals(recipeBeingModified.getName()) ||
-            !jTextField2.getText().equals(recipeBeingModified.getPrepTime()) ||
-            !cookTime.getText().equals(recipeBeingModified.getCookTime()) ||
-            !jTextArea1.getText().equals(recipeBeingModified.getDirections()) ||
-            !storedModel.equals(jList1.getModel())) {
-            if (jTextField1.getText().equals(recipeBeingModified.getName())) {
-                //Request user to modify the name because changes have been made.
-                JOptionPane.showMessageDialog(null, "Please modify the name of the recipe if you are changing it.");
-            } else {
+        if (checkChanges()) {
                 RecipeIF newRecipe = new Recipe(jTextField1.getText(),
                     jTextArea1.getText(), jTextField2.getText(), cookTime.getText(), ingredients);
                 if (client.storeRecipe(newRecipe)) {
                     //Returns true if it can store to database. Otherwise, name already exists.
-                    this.dispose();
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 } else {
                     JOptionPane.showMessageDialog(null, "This recipe name already exists. Please choose another name.");
                 }
-            }
         } else {
-            JOptionPane.showMessageDialog(null, "You didn't change anything.");
+            if (jTextField1.getText().equals(recipeBeingModified.getName())) {
+                //Request user to modify the name because changes have been made.
+                JOptionPane.showMessageDialog(null, "Please modify the name of the recipe.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Please make sure you changed something.\n"
+                        + "Note: Just changing the name is not allowed. ");
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private boolean checkChanges() {
+        return 
+            /* Make sure the name was changed */
+            !jTextField1.getText().equals(recipeBeingModified.getName())
+                &&
+            /* If the name was changed, make sure something else was too */
+            (!jTextField2.getText().equals(recipeBeingModified.getPrepTime())
+                ||
+            !cookTime.getText().equals(recipeBeingModified.getCookTime())
+                ||
+            !jTextArea1.getText().equals(recipeBeingModified.getDirections())
+                ||
+            !storedModel.equals(jList1.getModel()));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cookLabel;

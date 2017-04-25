@@ -1,9 +1,9 @@
 package application;
 
+import server.IngredientFactory;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -339,7 +339,7 @@ public class Client extends javax.swing.JFrame {
             int index = myIngredientList.getSelectedIndex();
             RecipeIngredientIF ri = myIngredients.get(index);
             myIngredients.remove(index);
-            modifyList(myIngredientList, myIngredients);
+            Utility.modifyList(myIngredientList, myIngredients);
             dr.removeIngredient(ri);
         }
     }//GEN-LAST:event_myIngredientListMouseClicked
@@ -353,20 +353,12 @@ public class Client extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_recipeListMouseClicked
     
-    private void modifyList(JList list, ArrayList info) {
-        DefaultListModel lm = new DefaultListModel();
-        for (Object o : info) {
-            lm.addElement(o);
-        }
-        list.setModel(lm);
-    }
-    
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
             RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
             if (!ri.getIngredient().equals("")) {
                 myIngredients.add(ri);
-                modifyList(myIngredientList, myIngredients);
+                Utility.modifyList(myIngredientList, myIngredients);
                 dr.addIngredient(ri);
             }
         } else {
@@ -412,7 +404,7 @@ public class Client extends javax.swing.JFrame {
 
     public void displayRecipeList(ArrayList<RecipeIF> rl) {
         currentRecipes = rl;
-        modifyList(recipeList, rl);
+        Utility.modifyList(recipeList, rl);
     }
 
     public void addPanel(DynamicPanel p) {

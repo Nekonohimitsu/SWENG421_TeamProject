@@ -82,6 +82,7 @@ public class Server {
     private static void sendRecipeList(SendableMessage m) throws IOException {
        SendableMessage recipeMessage = new Message(m.getMessageTitle(), listOfRecipes);
         for (ServerThread client : listOfClients) {
+            client.getOutputStream().reset(); //
             client.getOutputStream().writeObject(recipeMessage);
         }
     }
@@ -97,7 +98,6 @@ public class Server {
     
     private static void checkAndModifyRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
         RecipeIF newRecipe = (RecipeIF) m.getMessageContent();
-        System.out.println("Got: " + newRecipe);
         boolean response = true;
         for (RecipeIF r : listOfRecipes) {
             if (r.getName().equals(newRecipe.getName())) {
@@ -109,11 +109,11 @@ public class Server {
         sendingClient.getOutputStream().writeObject(responseMessage);
         if (response) {
             listOfRecipes.add(newRecipe);
+            addRecipeToDatabase(newRecipe);
         }
     }
 
     static void sendMessage(SendableMessage m) throws IOException {
-        System.out.println("Got message: " + m.getMessageTitle());
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
         if (sendingClient != null) {
             switch (m.getMessageTitle()) {
@@ -131,6 +131,7 @@ public class Server {
                     break;
                 case MODIFY_RECIPE:
                     checkAndModifyRecipe(m, sendingClient);
+                    break;
                 default:
                     break;
             }
@@ -202,7 +203,20 @@ public class Server {
         Statement stmt;
         try {
             stmt = connector.createStatement();
-            stmt.executeQuery("");
+            stmt.executeUpdate("INSERT INTO APP.RECIPES(RECIPE_NAME, "
+                    + "RECIPE_DIRECTIONS, RECIPE_CALORIES, RECIPE_SERVINGSIZE, "
+                    + "RECIPE_COOKTIME, RECIPE_PREPTIME, RECIPE_DESC) "
+                    + "VALUES ('" + r.getName() + "', '" + r.getDirections() + 
+                    "', " + r.getCalories() + ", " + r.getServingSize() + ", '" +
+                    r.getCookTime() + "', '" + r.getPrepTime() + "', '" + r.getDesc() + "')");
+            for (RecipeIngredientIF ri : r.getIngredients()) {
+                //Only way to get the ID of the ingredient is through the Ingredient Factory.
+                IngredientIF i = factory.getIngredient(ri.getIngredient());
+                stmt.executeUpdate("INSERT INTO APP.RECIPES_INGREDIENTS(RECIPE_NAME,"
+                        + " INGREDIENT_ID, AMOUNT_TYPE, AMOUNT) VALUES ('" + 
+                        r.getName() + "', " + i.getID() + ", '" +
+                        ri.getAmountType() + "', " + ri.getAmount() + ")");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }

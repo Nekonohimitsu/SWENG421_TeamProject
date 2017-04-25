@@ -100,7 +100,6 @@ public class DataRetriever extends Thread {
             try {
                 SendableMessage incomingObject;
                 while (((incomingObject = (SendableMessage) is.readObject()) != null) && !s.isClosed()) {
-                    System.out.println("Got message: " + incomingObject.getMessageTitle());
                     int clientID = incomingObject.getMessageSenderID();
                     switch (incomingObject.getMessageTitle()) {
                         case Server.SEND_INGREDIENT_LIST_TITLE:
