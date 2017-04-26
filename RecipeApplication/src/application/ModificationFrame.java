@@ -79,11 +79,13 @@ public class ModificationFrame extends javax.swing.JFrame {
         ingList = new javax.swing.JList<>();
         cancelButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        ingLabel1 = new javax.swing.JLabel();
+        qtyField = new javax.swing.JTextField();
+        qtyTypeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Recipe Modifier");
         setBackground(new java.awt.Color(137, 148, 139));
-        setResizable(false);
 
         modificationPanel.setBackground(new java.awt.Color(137, 148, 139));
 
@@ -112,7 +114,13 @@ public class ModificationFrame extends javax.swing.JFrame {
         });
 
         instructionTextArea.setColumns(20);
+        instructionTextArea.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        instructionTextArea.setLineWrap(true);
         instructionTextArea.setRows(5);
+        instructionTextArea.setWrapStyleWord(true);
+        instructionTextArea.setAutoscrolls(false);
+        instructionTextArea.setDragEnabled(true);
+        instructionTextArea.setMinimumSize(new java.awt.Dimension(224, 84));
         jScrollPane1.setViewportView(instructionTextArea);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -134,6 +142,11 @@ public class ModificationFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(ingList);
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +155,17 @@ public class ModificationFrame extends javax.swing.JFrame {
             }
         });
 
+        ingLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        ingLabel1.setText("Qty:");
+
+        qtyField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                qtyFieldActionPerformed(evt);
+            }
+        });
+
+        qtyTypeField.setText("oz");
+
         javax.swing.GroupLayout modificationPanelLayout = new javax.swing.GroupLayout(modificationPanel);
         modificationPanel.setLayout(modificationPanelLayout);
         modificationPanelLayout.setHorizontalGroup(
@@ -149,41 +173,55 @@ public class ModificationFrame extends javax.swing.JFrame {
             .addGroup(modificationPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(modificationPanelLayout.createSequentialGroup()
                         .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(instrLabel)
+                            .addComponent(jScrollPane1)
                             .addGroup(modificationPanelLayout.createSequentialGroup()
-                                .addGap(38, 38, 38)
                                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ingLabel)
-                                    .addComponent(prepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(25, 25, 25)
-                                .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(instrLabel)
                                     .addGroup(modificationPanelLayout.createSequentialGroup()
-                                        .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGap(38, 38, 38)
+                                        .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ingLabel)
+                                            .addComponent(prepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addGap(25, 25, 25)
+                                        .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(tipLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jScrollPane2)
+                                            .addComponent(recipeName)
                                             .addGroup(modificationPanelLayout.createSequentialGroup()
-                                                .addComponent(prepTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(cookLabel)
-                                                .addGap(25, 25, 25)
-                                                .addComponent(cookTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(ingField)
-                                            .addComponent(recipeName, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(addIngButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane2)
-                                    .addComponent(tipLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 126, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(modificationPanelLayout.createSequentialGroup()
-                .addGap(359, 359, 359)
-                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(cancelButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                                                        .addComponent(prepTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(143, 143, 143)
+                                                        .addComponent(cookLabel))
+                                                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                                                        .addComponent(ingField, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(ingLabel1)))
+                                                .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                                                        .addGap(22, 22, 22)
+                                                        .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(qtyTypeField))
+                                                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                                                        .addGap(22, 22, 22)
+                                                        .addComponent(cookTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(modificationPanelLayout.createSequentialGroup()
+                                                .addGap(165, 165, 165)
+                                                .addComponent(jLabel1)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(addIngButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 82, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         modificationPanelLayout.setVerticalGroup(
             modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,23 +239,31 @@ public class ModificationFrame extends javax.swing.JFrame {
                     .addComponent(cookLabel)
                     .addComponent(cookTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ingLabel)
-                    .addComponent(ingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addIngButton))
-                .addGap(8, 8, 8)
+                .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modificationPanelLayout.createSequentialGroup()
+                        .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ingLabel)
+                            .addComponent(ingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ingLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, modificationPanelLayout.createSequentialGroup()
+                        .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(qtyTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addIngButton))
+                        .addGap(18, 18, 18)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tipLabel)
                 .addGap(2, 2, 2)
                 .addComponent(instrLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(saveButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -281,6 +327,14 @@ public class ModificationFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ingListMouseClicked
 
+    private void qtyFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qtyFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_qtyFieldActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
     private boolean checkChanges() {
         return /* Make sure the name was changed */ !recipeName.getText().equals(recipeBeingModified.getName())
                 && /* If the name was changed, make sure something else was too */ (!prepTime.getText().equals(recipeBeingModified.getPrepTime())
@@ -296,6 +350,7 @@ public class ModificationFrame extends javax.swing.JFrame {
     private javax.swing.JTextField cookTime;
     private javax.swing.JTextField ingField;
     private javax.swing.JLabel ingLabel;
+    private javax.swing.JLabel ingLabel1;
     private javax.swing.JList<String> ingList;
     private javax.swing.JLabel instrLabel;
     private javax.swing.JTextArea instructionTextArea;
@@ -306,6 +361,8 @@ public class ModificationFrame extends javax.swing.JFrame {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel prepLabel;
     private javax.swing.JTextField prepTime;
+    private javax.swing.JTextField qtyField;
+    private javax.swing.JTextField qtyTypeField;
     private javax.swing.JTextField recipeName;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel tipLabel;
