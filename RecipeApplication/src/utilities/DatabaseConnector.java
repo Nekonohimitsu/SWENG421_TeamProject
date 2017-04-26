@@ -23,6 +23,7 @@ public class DatabaseConnector {
                 properties.put("user","Troyana");
                 properties.put("password", "WeAreGraduating");
                 connector = DriverManager.getConnection("jdbc:derby://localhost:1527/recipe_application", properties);
+                IngredientFactory.refreshIngredientList();
             } catch(SQLException e){
                 System.err.println(e);
             }  

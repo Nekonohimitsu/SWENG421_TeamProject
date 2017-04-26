@@ -6,11 +6,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class IngredientFactory {
-    private final HashMap<String, Ingredient> ingredientList = new HashMap();
+    private static final HashMap<String, Ingredient> ingredientList = new HashMap();
     
-    private void refreshIngredientList() {
+    static void refreshIngredientList() {
         try {
-            //Pull ingredients from database. Store them into an array. Make this occur every 5min.
+            //Pull ingredients from database. Store them into an array.
+            //This occurs once at the start of the program.
             Statement stmt = DatabaseConnector.getConnector().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM APP.INGREDIENTS");
             while (rs.next()) {
