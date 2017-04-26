@@ -1,10 +1,13 @@
 package application;
 
+import server.IngredientFactory;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import utilities.*;
 
@@ -12,6 +15,8 @@ public class Client extends javax.swing.JFrame {
 
     private static DataRetriever dr;
     private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
+    private ArrayList<RecipeIF> currentRecipes = new ArrayList<>();
+    private boolean serverResponse = false;
 
     /**
      * Creates new form Application
@@ -103,6 +108,11 @@ public class Client extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         myIngredientList.setSelectionBackground(new java.awt.Color(159, 183, 173));
+        myIngredientList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                myIngredientListMouseClicked(evt);
+            }
+        });
         myScrollPane.setViewportView(myIngredientList);
 
         removeIngLabel.setForeground(new java.awt.Color(167, 198, 167));
@@ -226,6 +236,11 @@ public class Client extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         recipeList.setSelectionBackground(new java.awt.Color(159, 183, 173));
+        recipeList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recipeListMouseClicked(evt);
+            }
+        });
         recipesScrollPane.setViewportView(recipeList);
 
         recipeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -319,20 +334,33 @@ public class Client extends javax.swing.JFrame {
         addIngredient(ingredient, 1.0, "cup");
     }//GEN-LAST:event_addIngredientButtonActionPerformed
 
+    private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
+        if (evt.getClickCount() > 1) { //Double clicked
+            int index = myIngredientList.getSelectedIndex();
+            RecipeIngredientIF ri = myIngredients.get(index);
+            myIngredients.remove(index);
+            Utility.modifyList(myIngredientList, myIngredients);
+            dr.removeIngredient(ri);
+        }
+    }//GEN-LAST:event_myIngredientListMouseClicked
+
+    private void recipeListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recipeListMouseClicked
+        if (evt.getClickCount() > 1) {//double clicked
+            int index = recipeList.getSelectedIndex();
+            RecipeIF selectedRecipe = currentRecipes.get(index);
+            ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
+            modificationFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_recipeListMouseClicked
+    
     private void addIngredient(String ingredientName, double amount, String amount_type) {
-        if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
-            RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
-            if (!ri.getIngredient().equals("")) {
-                myIngredients.add(ri);
-                DefaultListModel lm = new DefaultListModel();
-                for (RecipeIngredientIF ingredient : myIngredients) {
-                    lm.addElement(ingredient.toString());
-                }
-                myIngredientList.setModel(lm);
-                dr.addIngredient(ri);
-            }
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        if (ri != null) {
+            myIngredients.add(ri);
+            Utility.modifyList(myIngredientList, myIngredients);
+            dr.addIngredient(ri);
         } else {
-            //Display ingredient doesn't exist error.
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
         }
     }
 
@@ -373,11 +401,8 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void displayRecipeList(ArrayList<RecipeIF> rl) {
-        DefaultListModel lm = new DefaultListModel();
-        for (RecipeIF r : rl) {
-            lm.addElement(r.getName());
-        }
-        recipeList.setModel(lm);
+        currentRecipes = rl;
+        Utility.modifyList(recipeList, rl);
     }
 
     public void addPanel(DynamicPanel p) {
@@ -391,6 +416,22 @@ public class Client extends javax.swing.JFrame {
         friendsPanel.remove(p);
         friendsPanel.revalidate();
         friendsPanel.repaint();
+    }
+    
+    public boolean storeRecipe(RecipeIF r) {
+        dr.sendRecipe(r);
+        synchronized(this) {
+            try {
+                this.wait();
+                return serverResponse;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+    public void setResponse(boolean response) {
+        serverResponse = response;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

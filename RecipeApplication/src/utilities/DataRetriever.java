@@ -20,14 +20,14 @@ public class DataRetriever extends Thread {
     private Socket s;
     private ObjectInputStream is;
     private ObjectOutputStream os;
-    private Client c;
+    private final Client c;
 
     private DataRetriever(Client c) {
+        this.c = c;
         try {
             s = new Socket(InetAddress.getLocalHost(), 5000);
             os = new ObjectOutputStream(s.getOutputStream());//For sending ingredient name
             is = new ObjectInputStream(s.getInputStream());//For Receiving Recipe
-            this.c = c;
         } catch (IOException ex) {
             Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,9 +53,27 @@ public class DataRetriever extends Thread {
             }
         }
     }
+    
+    public void removeIngredient(RecipeIngredientIF ri) {
+        SendableMessage m = new Message(Server.RMV_INGREDIENT_TITLE, ri);
+        try {
+            os.writeObject(m);
+        } catch (IOException ex) {
+            Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void addIngredient(RecipeIngredientIF ri) {
         SendableMessage m = new Message(Server.ADD_INGREDIENT_TITLE, ri);
+        try {
+            os.writeObject(m);
+        } catch (IOException ex) {
+            Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void sendRecipe(RecipeIF r) {
+        SendableMessage m = new Message(Server.MODIFY_RECIPE, r);
         try {
             os.writeObject(m);
         } catch (IOException ex) {
@@ -82,7 +100,6 @@ public class DataRetriever extends Thread {
             try {
                 SendableMessage incomingObject;
                 while (((incomingObject = (SendableMessage) is.readObject()) != null) && !s.isClosed()) {
-                    System.out.println("Got message: " + incomingObject.getMessageTitle());
                     int clientID = incomingObject.getMessageSenderID();
                     switch (incomingObject.getMessageTitle()) {
                         case Server.SEND_INGREDIENT_LIST_TITLE:
@@ -114,6 +131,12 @@ public class DataRetriever extends Thread {
                             c.addPanel(p);
                             p.setIngredientList(ingList);
                             break;
+                        case Server.MODIFY_RECIPE_RESPONSE:
+                            boolean response = (boolean)incomingObject.getMessageContent();
+                            synchronized(c) {
+                                c.setResponse(response);
+                                c.notify();
+                            }
                         default:
                             break;
                     }

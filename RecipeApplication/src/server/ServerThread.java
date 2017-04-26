@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
 
 class ServerThread extends Thread {
@@ -44,13 +45,19 @@ class ServerThread extends Thread {
             sendMessage(new Message(Server.ADD_NEW_CLIENT_TITLE, null, this));
             SendableMessage m;
             while ((m = (SendableMessage) is.readObject()) != null) {
-                System.out.println("Got message: " + m.getMessageTitle());
                 switch (m.getMessageTitle()) {
                     case Server.ADD_INGREDIENT_TITLE:
                         RecipeIngredientIF newIngredient = (RecipeIngredientIF)m.getMessageContent();
                         ingredientList.add(newIngredient);
                         sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
                         break;
+                    case Server.RMV_INGREDIENT_TITLE:
+                        RecipeIngredientIF ingredientToRemove = (RecipeIngredientIF)m.getMessageContent();
+                        ingredientList.remove(ingredientToRemove);
+                        sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
+                    case Server.MODIFY_RECIPE:
+                        //Transfer request to server. 
+                        sendMessage(new Message(Server.MODIFY_RECIPE, m.getMessageContent(), this));
                     case Server.ADD_FILTER_TITLE:
                         break;
                     default:
@@ -71,6 +78,7 @@ class ServerThread extends Thread {
         try {
             //It's our turn if we're here.
             Server.sendMessage(m);
+            Server.sendMessage(new Message(Server.SEND_RECIPE_LIST_TITLE, null, this));
         } finally {
             scheduler.done();//Tell scheduler we've sent our message.
         }

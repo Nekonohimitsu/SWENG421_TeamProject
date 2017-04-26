@@ -98,27 +98,20 @@ public abstract class RecipeAbs implements RecipeIF{
     
     @Override
     public ArrayList<RecipeIngredientIF> getIngredients() {
-        ArrayList<RecipeIngredientIF> base = getBaseIngredients();
-        if (getAddedIngredients() != null)
-            base.addAll(getAddedIngredients());
-        return base;
-    }
-    
-    @Override
-    public ArrayList<RecipeIngredientIF> getAddedIngredients() {
-        return null;
+        return baseIngredients;
     }
     
     @Override
     public ArrayList<RecipeIngredientIF> getBaseIngredients() {
         return baseIngredients;
     }
+    
     @Override
-    public RecipeIF getBaseRecipe() {
-        return null;
+    public String toString() {
+        return name + " - Prep Time: " + prepTime + " / CookTime: " + cookTime;
     }
     @Override
-    public RecipeIngredientIF getAddedIngredient() {
-        return null;
+    public boolean removeIngredient(RecipeIngredientIF ingredient){
+        return baseIngredients.remove(ingredient);
     }
 }

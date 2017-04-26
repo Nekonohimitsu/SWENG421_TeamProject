@@ -4,9 +4,14 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import utilities.DatabaseConnector;
-import utilities.IngredientFactory;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utilities.*;
 
 public class Server {
 
@@ -15,17 +20,28 @@ public class Server {
     private final static Scheduler scheduler = new Scheduler();
     private final static Connection connector = DatabaseConnector.getConnector();
     private final static IngredientFactory factory = IngredientFactory.getFactory();
+    private static ArrayList<RecipeIF> listOfRecipes = new ArrayList<>();
+    private final static HashMap<ServerThread, ArrayList<RecipeIngredientIF>> listOfAllIngredients = new HashMap<>();
+    
+    /* Message Titles -
+     * These specify message headers that are used for specific commands
+     * They make sure the right process is always run when a given header is recieved.
+    */
     public static final String SEND_INGREDIENT_LIST_TITLE = "UpdateIngredientList";
     public static final String ADD_NEW_CLIENT_TITLE = "AddNewClient";
     public static final String REMOVE_CLIENT_TITLE = "RemoveClient";
     public static final String SEND_RECIPE_LIST_TITLE = "UpdateRecipeList";
     public static final String WELCOME_TITLE = "UpdatePanels";
     public static final String ADD_INGREDIENT_TITLE = "AddNewIngredient";
+    public static final String RMV_INGREDIENT_TITLE = "RemoveIngredient";
     public static final String ADD_FILTER_TITLE = "NewFilterTitle";
+    public static final String MODIFY_RECIPE = "ModifyRecipe";
+    public static final String MODIFY_RECIPE_RESPONSE = "ModifyRecipeResponse";
 
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(5000);
         factory.refreshIngredientList();
+        listOfRecipes = getRecipes();
         while (true) {
             Socket s = ss.accept();
             ObjectInputStream is = new ObjectInputStream(s.getInputStream());
@@ -42,6 +58,7 @@ public class Server {
                 client.getOutputStream().writeObject(m);
             }
         }
+        listOfAllIngredients.remove(sendingClient);
         listOfClients.remove(sendingClient);
         if (listOfClients.isEmpty()) {
             currentID = 0;
@@ -49,6 +66,7 @@ public class Server {
     }
 
     private static void sendNewClient(SendableMessage m, ServerThread sendingClient) throws IOException {
+        listOfAllIngredients.put(sendingClient, null);
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
@@ -61,23 +79,42 @@ public class Server {
         }
     }
 
-    private static void sendRecipeList(SendableMessage m, ServerThread sendingClient) throws IOException {
+    private static void sendRecipeList(SendableMessage m) throws IOException {
+       SendableMessage recipeMessage = new Message(m.getMessageTitle(), listOfRecipes);
         for (ServerThread client : listOfClients) {
-            client.getOutputStream().writeObject(m);
+            client.getOutputStream().reset(); //
+            client.getOutputStream().writeObject(recipeMessage);
         }
     }
 
     private static void sendIngredientList(SendableMessage m, ServerThread sendingClient) throws IOException {
+        listOfAllIngredients.put(sendingClient, (ArrayList)m.getMessageContent());
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
             }
         }
     }
+    
+    private static void checkAndModifyRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
+        RecipeIF newRecipe = (RecipeIF) m.getMessageContent();
+        boolean response = true;
+        for (RecipeIF r : listOfRecipes) {
+            if (r.getName().equals(newRecipe.getName())) {
+                response = false;
+                break;
+            } 
+        }
+        SendableMessage responseMessage = new Message(MODIFY_RECIPE_RESPONSE, response);
+        sendingClient.getOutputStream().writeObject(responseMessage);
+        if (response) {
+            listOfRecipes.add(newRecipe);
+            addRecipeToDatabase(newRecipe);
+        }
+    }
 
     static void sendMessage(SendableMessage m) throws IOException {
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
-        System.out.println("Sending message - " + m.getMessageTitle());
         if (sendingClient != null) {
             switch (m.getMessageTitle()) {
                 case SEND_INGREDIENT_LIST_TITLE:
@@ -90,7 +127,10 @@ public class Server {
                     sendNewClient(m, sendingClient);
                     break;
                 case SEND_RECIPE_LIST_TITLE:
-                    sendRecipeList(m, sendingClient);
+                    sendRecipeList(m);
+                    break;
+                case MODIFY_RECIPE:
+                    checkAndModifyRecipe(m, sendingClient);
                     break;
                 default:
                     break;
@@ -105,5 +145,80 @@ public class Server {
             }
         }
         return null;
+    }
+    
+    private static ArrayList<RecipeIF> getRecipes() {
+    //This is expensive to run (takes a long time - or will when theres more recipes). Only run if really needed.
+        ArrayList<RecipeIF> recipeList = new ArrayList<>();
+        Statement stmt;
+        try {
+            stmt = connector.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM APP.RECIPES");
+            while (rs.next()) {
+                String name = rs.getString("RECIPE_NAME");
+                String directions = rs.getString("RECIPE_DIRECTIONS");
+                ArrayList<RecipeIngredientIF> ingredients = getIngredientsInRecipe(name);
+                int calories = rs.getInt("RECIPE_CALORIES");
+                int servingSize = rs.getInt("RECIPE_SERVINGSIZE");
+                String cookTime = rs.getString("RECIPE_COOKTIME");
+                String prepTime = rs.getString("RECIPE_PREPTIME");
+                String desc = rs.getString("RECIPE_DESC");
+                RecipeIF r = new Recipe(name,directions ,ingredients);
+                r.setCalories(calories);
+                r.setCookTime(cookTime);
+                r.setDesc(desc);
+                r.setPrepTime(prepTime);
+                r.setServingSize(servingSize);
+                recipeList.add(r);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return recipeList;
+    }
+    
+    private static ArrayList<RecipeIngredientIF> getIngredientsInRecipe(String recipeName) {
+        Statement stmt;
+        ArrayList<RecipeIngredientIF> ingredients = new ArrayList<>();
+        try {
+            stmt = connector.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT i.INGREDIENT_NAME, ri.AMOUNT_TYPE, ri.AMOUNT\n" +
+                "FROM APP.RECIPES r\n" +
+                "LEFT JOIN APP.RECIPES_INGREDIENTS ri ON r.RECIPE_NAME = ri.RECIPE_NAME\n" +
+                "LEFT JOIN APP.INGREDIENTS i ON ri.INGREDIENT_ID = i.INGREDIENT_ID\n" +
+                "WHERE r.RECIPE_NAME = '" + recipeName + "'");
+            while (rs.next()) {
+                String name = rs.getString("INGREDIENT_NAME");
+                String amountType = rs.getString("AMOUNT_TYPE");
+                double amount = rs.getDouble("AMOUNT");
+                ingredients.add(new RecipeIngredient(name, amount, amountType));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ingredients;
+    }
+    
+    private static void addRecipeToDatabase(RecipeIF r) {
+        Statement stmt;
+        try {
+            stmt = connector.createStatement();
+            stmt.executeUpdate("INSERT INTO APP.RECIPES(RECIPE_NAME, "
+                    + "RECIPE_DIRECTIONS, RECIPE_CALORIES, RECIPE_SERVINGSIZE, "
+                    + "RECIPE_COOKTIME, RECIPE_PREPTIME, RECIPE_DESC) "
+                    + "VALUES ('" + r.getName() + "', '" + r.getDirections() + 
+                    "', " + r.getCalories() + ", " + r.getServingSize() + ", '" +
+                    r.getCookTime() + "', '" + r.getPrepTime() + "', '" + r.getDesc() + "')");
+            for (RecipeIngredientIF ri : r.getIngredients()) {
+                //Only way to get the ID of the ingredient is through the Ingredient Factory.
+                IngredientIF i = factory.getIngredient(ri.getIngredient());
+                stmt.executeUpdate("INSERT INTO APP.RECIPES_INGREDIENTS(RECIPE_NAME,"
+                        + " INGREDIENT_ID, AMOUNT_TYPE, AMOUNT) VALUES ('" + 
+                        r.getName() + "', " + i.getID() + ", '" +
+                        ri.getAmountType() + "', " + ri.getAmount() + ")");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

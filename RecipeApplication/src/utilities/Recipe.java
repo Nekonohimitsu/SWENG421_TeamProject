@@ -1,9 +1,8 @@
 package utilities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe extends RecipeAbs implements Serializable{
+public class Recipe extends RecipeAbs {
     public Recipe(String name, String directions, ArrayList<RecipeIngredientIF> baseIngredients) {
         super(name, directions, baseIngredients);
     }

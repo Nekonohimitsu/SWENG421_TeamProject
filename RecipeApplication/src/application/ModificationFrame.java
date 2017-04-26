@@ -1,23 +1,54 @@
 package application;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import utilities.Recipe;
+import utilities.RecipeIF;
+import utilities.RecipeIngredientIF;
+import utilities.RecipeWrapper;
+import utilities.Utility;
 
+public class ModificationFrame extends javax.swing.JFrame {
 
-/**
- *
- * @author iimax
- */
-public class ModFrame extends javax.swing.JFrame {
+    /**
+     * Creates new form ModificationFrame
+     */
+    private RecipeIF recipeBeingModified;
+    private final DefaultListModel storedModel;
+    private static ModificationFrame instance = null;
+    private final Client client;
 
     /**
      * Creates new form modFrame
+     *
+     * @param recipe
      */
-    public ModFrame() {
+    private ModificationFrame(RecipeIF recipe, Client c) {
+        recipeBeingModified = recipe;
+        client = c;
         initComponents();
+        recipeName.setText(recipeBeingModified.getName());
+        prepTime.setText(recipeBeingModified.getPrepTime());
+        cookTime.setText(recipeBeingModified.getCookTime());
+        storedModel = Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        instructionTextArea.setText(recipeBeingModified.getDirections());
+    }
+
+    public static ModificationFrame getInstance(RecipeIF recipe, Client c) {
+        if (instance == null) {
+            instance = new ModificationFrame(recipe, c);
+            instance.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            instance.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    instance = null;
+                }
+            });
+        }
+        return instance;
     }
 
     /**
@@ -89,12 +120,27 @@ public class ModFrame extends javax.swing.JFrame {
         jLabel1.setText("Recipe Modification");
 
         addIngButton.setText("+");
+        addIngButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addIngButtonActionPerformed(evt);
+            }
+        });
 
+        ingList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ingListMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(ingList);
 
         cancelButton.setText("Cancel");
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout modificationPanelLayout = new javax.swing.GroupLayout(modificationPanel);
         modificationPanel.setLayout(modificationPanelLayout);
@@ -192,40 +238,55 @@ public class ModFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ingFieldActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void addIngButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngButtonActionPerformed
+        // Add Ingredient Button 
+        String ingredientName = ingField.getText();
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        if (ri != null) {
+            recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
+            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_addIngButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModFrame().setVisible(true);
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //Save Button - we want to make sure they change the name of the recipe if they modify it.
+        if (checkChanges()) {
+            RecipeIF newRecipe = new Recipe(recipeName.getText(),
+                    recipeName.getText(), prepTime.getText(), cookTime.getText(), recipeBeingModified.getIngredients());
+            if (client.storeRecipe(newRecipe)) {
+                //Returns true if it can store to database. Otherwise, name already exists.
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            } else {
+                JOptionPane.showMessageDialog(null, "This recipe name already exists. Please choose another name.");
             }
-        });
+        } else {
+            if (recipeName.getText().equals(recipeBeingModified.getName())) {
+                //Request user to modify the name because changes have been made.
+                JOptionPane.showMessageDialog(null, "Please modify the name of the recipe.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Please make sure you changed something.\n"
+                        + "Note: Just changing the name is not allowed. ");
+            }
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void ingListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingListMouseClicked
+        if (evt.getClickCount() > 1) { //Double clicked
+            int index = ingList.getSelectedIndex();
+            RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
+            recipeBeingModified.removeIngredient(ri);
+            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        }
+    }//GEN-LAST:event_ingListMouseClicked
+
+    private boolean checkChanges() {
+        return /* Make sure the name was changed */ !recipeName.getText().equals(recipeBeingModified.getName())
+                && /* If the name was changed, make sure something else was too */ (!prepTime.getText().equals(recipeBeingModified.getPrepTime())
+                || !cookTime.getText().equals(recipeBeingModified.getCookTime())
+                || !instructionTextArea.getText().equals(recipeBeingModified.getDirections())
+                || !storedModel.equals(ingList.getModel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
