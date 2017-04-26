@@ -1,8 +1,9 @@
 package utilities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public interface RecipeIF {
+public interface RecipeIF extends Serializable {
     String getName();
     String getDesc();
     String getDirections();
@@ -10,11 +11,8 @@ public interface RecipeIF {
     int getServingSize();
     String getPrepTime();
     String getCookTime();
-    ArrayList<RecipeIngredientIF> getAddedIngredients();
     ArrayList<RecipeIngredientIF> getIngredients();
     ArrayList<RecipeIngredientIF> getBaseIngredients();
-    RecipeIF getBaseRecipe();
-    RecipeIngredientIF getAddedIngredient();
     void setName(String name);
     void setDesc(String desc);
     void setDirections(String directions);
@@ -23,4 +21,7 @@ public interface RecipeIF {
     void setPrepTime(String prepTime);
     void setCookTime(String cookTime);
     RecipeIF addIngredient(RecipeIngredientIF ri);
+    boolean removeIngredient(RecipeIngredientIF ingredientName);
+    @Override
+    String toString();
 }

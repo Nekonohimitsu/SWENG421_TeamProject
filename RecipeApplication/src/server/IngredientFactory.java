@@ -1,4 +1,4 @@
-package utilities;
+package server;
 
 import java.sql.*;
 import java.util.HashMap;

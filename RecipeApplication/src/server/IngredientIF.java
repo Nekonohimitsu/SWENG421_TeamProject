@@ -1,4 +1,4 @@
-package utilities;
+package server;
 
 interface IngredientIF {
     String getName();

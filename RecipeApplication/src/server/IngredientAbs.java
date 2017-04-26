@@ -1,4 +1,4 @@
-package utilities;
+package server;
 
 abstract class IngredientAbs implements IngredientIF{
     private String name;

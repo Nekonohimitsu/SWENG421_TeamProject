@@ -1,23 +1,54 @@
 package application;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import utilities.Recipe;
+import utilities.RecipeIF;
+import utilities.RecipeIngredientIF;
+import utilities.RecipeWrapper;
+import utilities.Utility;
 
+public class ModificationFrame extends javax.swing.JFrame {
 
-/**
- *
- * @author iimax
- */
-public class ModFrame extends javax.swing.JFrame {
+    /**
+     * Creates new form ModificationFrame
+     */
+    private RecipeIF recipeBeingModified;
+    private final DefaultListModel storedModel;
+    private static ModificationFrame instance = null;
+    private final Client client;
 
     /**
      * Creates new form modFrame
+     *
+     * @param recipe
      */
-    public ModFrame() {
+    private ModificationFrame(RecipeIF recipe, Client c) {
+        recipeBeingModified = recipe;
+        client = c;
         initComponents();
+        recipeName.setText(recipeBeingModified.getName());
+        prepTime.setText(recipeBeingModified.getPrepTime());
+        cookTime.setText(recipeBeingModified.getCookTime());
+        storedModel = Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        instructionTextArea.setText(recipeBeingModified.getDirections());
+    }
+
+    public static ModificationFrame getInstance(RecipeIF recipe, Client c) {
+        if (instance == null) {
+            instance = new ModificationFrame(recipe, c);
+            instance.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            instance.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    instance = null;
+                }
+            });
+        }
+        return instance;
     }
 
     /**
@@ -36,22 +67,23 @@ public class ModFrame extends javax.swing.JFrame {
         prepLabel = new javax.swing.JLabel();
         instrLabel = new javax.swing.JLabel();
         cookLabel = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        recipeName = new javax.swing.JTextField();
+        prepTime = new javax.swing.JTextField();
+        ingField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        instructionTextArea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addIngButton = new javax.swing.JButton();
         cookTime = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        ingList = new javax.swing.JList<>();
+        cancelButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Recipe Modifier");
         setBackground(new java.awt.Color(137, 148, 139));
+        setResizable(false);
 
         modificationPanel.setBackground(new java.awt.Color(137, 148, 139));
 
@@ -73,27 +105,42 @@ public class ModFrame extends javax.swing.JFrame {
         cookLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         cookLabel.setText("Cook Time:");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        ingField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                ingFieldActionPerformed(evt);
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        instructionTextArea.setColumns(20);
+        instructionTextArea.setRows(5);
+        jScrollPane1.setViewportView(instructionTextArea);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Recipe Modification");
 
-        jButton1.setText("+");
+        addIngButton.setText("+");
+        addIngButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addIngButtonActionPerformed(evt);
+            }
+        });
 
-        jScrollPane2.setViewportView(jList1);
+        ingList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ingListMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(ingList);
 
-        jButton2.setText("Cancel");
+        cancelButton.setText("Cancel");
 
-        jButton3.setText("Save");
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout modificationPanelLayout = new javax.swing.GroupLayout(modificationPanel);
         modificationPanel.setLayout(modificationPanelLayout);
@@ -118,24 +165,24 @@ public class ModFrame extends javax.swing.JFrame {
                                     .addGroup(modificationPanelLayout.createSequentialGroup()
                                         .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addGroup(modificationPanelLayout.createSequentialGroup()
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(prepTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(cookLabel)
                                                 .addGap(25, 25, 25)
                                                 .addComponent(cookTime, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jTextField4)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(ingField)
+                                            .addComponent(recipeName, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(addIngButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane2)
                                     .addComponent(tipLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 126, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(modificationPanelLayout.createSequentialGroup()
                 .addGap(359, 359, 359)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(cancelButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         modificationPanelLayout.setVerticalGroup(
@@ -146,18 +193,18 @@ public class ModFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameLabel)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(recipeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prepLabel)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(prepTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cookLabel)
                     .addComponent(cookTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ingLabel)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(ingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addIngButton))
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -168,8 +215,8 @@ public class ModFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(modificationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(cancelButton)
+                    .addComponent(saveButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -187,65 +234,80 @@ public class ModFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void ingFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_ingFieldActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void addIngButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngButtonActionPerformed
+        // Add Ingredient Button 
+        String ingredientName = ingField.getText();
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        if (ri != null) {
+            recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
+            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_addIngButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModFrame().setVisible(true);
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //Save Button - we want to make sure they change the name of the recipe if they modify it.
+        if (checkChanges()) {
+            RecipeIF newRecipe = new Recipe(recipeName.getText(),
+                    recipeName.getText(), prepTime.getText(), cookTime.getText(), recipeBeingModified.getIngredients());
+            if (client.storeRecipe(newRecipe)) {
+                //Returns true if it can store to database. Otherwise, name already exists.
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            } else {
+                JOptionPane.showMessageDialog(null, "This recipe name already exists. Please choose another name.");
             }
-        });
+        } else {
+            if (recipeName.getText().equals(recipeBeingModified.getName())) {
+                //Request user to modify the name because changes have been made.
+                JOptionPane.showMessageDialog(null, "Please modify the name of the recipe.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Please make sure you changed something.\n"
+                        + "Note: Just changing the name is not allowed. ");
+            }
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void ingListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingListMouseClicked
+        if (evt.getClickCount() > 1) { //Double clicked
+            int index = ingList.getSelectedIndex();
+            RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
+            recipeBeingModified.removeIngredient(ri);
+            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        }
+    }//GEN-LAST:event_ingListMouseClicked
+
+    private boolean checkChanges() {
+        return /* Make sure the name was changed */ !recipeName.getText().equals(recipeBeingModified.getName())
+                && /* If the name was changed, make sure something else was too */ (!prepTime.getText().equals(recipeBeingModified.getPrepTime())
+                || !cookTime.getText().equals(recipeBeingModified.getCookTime())
+                || !instructionTextArea.getText().equals(recipeBeingModified.getDirections())
+                || !storedModel.equals(ingList.getModel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addIngButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JLabel cookLabel;
     private javax.swing.JTextField cookTime;
+    private javax.swing.JTextField ingField;
     private javax.swing.JLabel ingLabel;
+    private javax.swing.JList<String> ingList;
     private javax.swing.JLabel instrLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTextArea instructionTextArea;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JPanel modificationPanel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel prepLabel;
+    private javax.swing.JTextField prepTime;
+    private javax.swing.JTextField recipeName;
+    private javax.swing.JButton saveButton;
     private javax.swing.JLabel tipLabel;
     // End of variables declaration//GEN-END:variables
 }
