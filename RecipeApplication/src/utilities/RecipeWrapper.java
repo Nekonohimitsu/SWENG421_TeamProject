@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RecipeWrapper extends Recipe{
     private RecipeIF recipe;
-    private final RecipeIngredientIF ingredient;
+    private RecipeIngredientIF ingredient;
     
     public RecipeWrapper(RecipeIF r, RecipeIngredientIF ri) {
         super(r.getName(), r.getDirections(), r.getDesc(), r.getPrepTime(), r.getCookTime(), r.getBaseIngredients());
@@ -20,12 +20,21 @@ public class RecipeWrapper extends Recipe{
         return ingredients;
     }
     
-    private ArrayList<RecipeIngredientIF> getAddedIngredients() {
-        ArrayList<RecipeIngredientIF> addedIngredients = new ArrayList<>();
-        if (recipe != null) {
-            addedIngredients.add(ingredient);
+    @Override
+    public ArrayList<RecipeIngredientIF> getAddedIngredients() {
+        ArrayList<RecipeIngredientIF> ingredients = new ArrayList<>();
+        if (getBaseRecipe() != null && getBaseRecipe().getAddedIngredients() != null) {
+            ingredients.addAll(getBaseRecipe().getAddedIngredients());
         }
-        return addedIngredients;
+        if (recipe != null && ingredient != null) {
+            ingredients.add(ingredient);
+        }
+        return ingredients;
+    }
+    
+    @Override 
+    public RecipeIngredientIF getAddedIngredient() {
+        return ingredient;
     }
     
     @Override
@@ -37,14 +46,21 @@ public class RecipeWrapper extends Recipe{
          return removalResult;
     }
     
-    private boolean removeAddedIngredient(RecipeIngredientIF ingredient) {
-        if (ingredient == this.ingredient) {
-            //Set Current recipe to last recipe.
-            return true;
-        } else if (this.ingredient != null) {
-            return ((RecipeWrapper)recipe).removeAddedIngredient(ingredient);
-        } else {
+    @Override
+    public RecipeIF getBaseRecipe() {
+        return recipe;
+    }
+    
+    @Override
+    public boolean removeAddedIngredient(RecipeIngredientIF ingredient) {
+        if (this.ingredient == null) {
+            //base recipe was deleted.
             return false;
+        } else if (this.ingredient == ingredient) {
+            this.ingredient = null;
+            return true;
+        } else {
+            return recipe.removeAddedIngredient(ingredient);
         }
     }
 }

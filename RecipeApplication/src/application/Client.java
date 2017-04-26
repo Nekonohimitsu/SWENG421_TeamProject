@@ -337,10 +337,12 @@ public class Client extends javax.swing.JFrame {
     private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
         if (evt.getClickCount() > 1) { //Double clicked
             int index = myIngredientList.getSelectedIndex();
-            RecipeIngredientIF ri = myIngredients.get(index);
-            myIngredients.remove(index);
-            Utility.modifyList(myIngredientList, myIngredients);
-            dr.removeIngredient(ri);
+            if (index != -1) {
+                RecipeIngredientIF ri = myIngredients.get(index);
+                myIngredients.remove(index);
+                Utility.modifyList(myIngredientList, myIngredients);
+                dr.removeIngredient(ri);
+            }
         }
     }//GEN-LAST:event_myIngredientListMouseClicked
 
@@ -406,7 +408,7 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void addPanel(DynamicPanel p) {
-        friendsPanel.setLayout(new java.awt.BorderLayout());
+        friendsPanel.setLayout(new java.awt.GridLayout());
         friendsPanel.add(p);
         friendsPanel.revalidate();
         friendsPanel.repaint();

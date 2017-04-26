@@ -134,6 +134,11 @@ public class ModificationFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(ingList);
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -275,11 +280,17 @@ public class ModificationFrame extends javax.swing.JFrame {
     private void ingListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingListMouseClicked
         if (evt.getClickCount() > 1) { //Double clicked
             int index = ingList.getSelectedIndex();
-            RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
-            recipeBeingModified.removeIngredient(ri);
-            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+            if (index != -1) {
+                RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
+                recipeBeingModified.removeIngredient(ri);
+                Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+            }
         }
     }//GEN-LAST:event_ingListMouseClicked
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     private boolean checkChanges() {
         return /* Make sure the name was changed */ !recipeName.getText().equals(recipeBeingModified.getName())
