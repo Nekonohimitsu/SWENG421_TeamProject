@@ -11,11 +11,8 @@ public interface RecipeIF extends Serializable {
     int getServingSize();
     String getPrepTime();
     String getCookTime();
-    ArrayList<RecipeIngredientIF> getAddedIngredients();
     ArrayList<RecipeIngredientIF> getIngredients();
     ArrayList<RecipeIngredientIF> getBaseIngredients();
-    RecipeIF getBaseRecipe();
-    RecipeIngredientIF getAddedIngredient();
     void setName(String name);
     void setDesc(String desc);
     void setDirections(String directions);
@@ -24,6 +21,7 @@ public interface RecipeIF extends Serializable {
     void setPrepTime(String prepTime);
     void setCookTime(String cookTime);
     RecipeIF addIngredient(RecipeIngredientIF ri);
+    boolean removeIngredient(RecipeIngredientIF ingredientName);
     @Override
     String toString();
 }

@@ -9,11 +9,11 @@ import javax.swing.JOptionPane;
 import utilities.Recipe;
 import utilities.RecipeIF;
 import utilities.RecipeIngredientIF;
+import utilities.RecipeWrapper;
 import utilities.Utility;
 
 public class ModFrame extends javax.swing.JFrame {
-    private final RecipeIF recipeBeingModified;
-    private final ArrayList<RecipeIngredientIF> ingredients;
+    private RecipeIF recipeBeingModified;
     private final DefaultListModel storedModel;
     private static ModFrame instance = null;
     private final Client client;
@@ -28,8 +28,7 @@ public class ModFrame extends javax.swing.JFrame {
         jTextField1.setText(recipeBeingModified.getName());
         jTextField2.setText(recipeBeingModified.getPrepTime());
         cookTime.setText(recipeBeingModified.getCookTime());
-        ingredients = recipeBeingModified.getIngredients();
-        storedModel = Utility.modifyList(jList1, ingredients);
+        storedModel = Utility.modifyList(jList1, recipeBeingModified.getIngredients());
         jTextArea1.setText(recipeBeingModified.getDirections());
     }
     
@@ -120,6 +119,11 @@ public class ModFrame extends javax.swing.JFrame {
             }
         });
 
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jList1);
 
         jButton2.setText("Cancel");
@@ -228,14 +232,23 @@ public class ModFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // Add Ingredient Button 
+        String ingredientName = jTextField4.getText();
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        if (ri != null) {
+            recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
+            Utility.modifyList(jList1, recipeBeingModified.getIngredients());
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Save Button - we want to make sure they change the name of the recipe if they modify it.
         if (checkChanges()) {
                 RecipeIF newRecipe = new Recipe(jTextField1.getText(),
-                    jTextArea1.getText(), jTextField2.getText(), cookTime.getText(), ingredients);
+                    jTextArea1.getText(), jTextField2.getText(), cookTime.getText(), recipeBeingModified.getIngredients());
                 if (client.storeRecipe(newRecipe)) {
                     //Returns true if it can store to database. Otherwise, name already exists.
                     this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -252,6 +265,15 @@ public class ModFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        if (evt.getClickCount() > 1) { //Double clicked
+            int index = jList1.getSelectedIndex();
+            RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
+            recipeBeingModified.removeIngredient(ri);
+            Utility.modifyList(jList1, recipeBeingModified.getIngredients());
+        }
+    }//GEN-LAST:event_jList1MouseClicked
 
     private boolean checkChanges() {
         return 

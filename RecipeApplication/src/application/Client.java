@@ -354,15 +354,13 @@ public class Client extends javax.swing.JFrame {
     }//GEN-LAST:event_recipeListMouseClicked
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
-        if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
-            RecipeIngredient ri = new RecipeIngredient(ingredientName, amount, amount_type);
-            if (!ri.getIngredient().equals("")) {
-                myIngredients.add(ri);
-                Utility.modifyList(myIngredientList, myIngredients);
-                dr.addIngredient(ri);
-            }
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        if (ri != null) {
+            myIngredients.add(ri);
+            Utility.modifyList(myIngredientList, myIngredients);
+            dr.addIngredient(ri);
         } else {
-            //Display ingredient doesn't exist error.
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
         }
     }
 
