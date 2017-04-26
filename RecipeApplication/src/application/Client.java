@@ -348,7 +348,7 @@ public class Client extends javax.swing.JFrame {
         if (evt.getClickCount() > 1) {//double clicked
             int index = recipeList.getSelectedIndex();
             RecipeIF selectedRecipe = currentRecipes.get(index);
-            ModFrame modificationFrame = ModFrame.getInstance(selectedRecipe, this);
+            ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
             modificationFrame.setVisible(true);
         }
     }//GEN-LAST:event_recipeListMouseClicked
