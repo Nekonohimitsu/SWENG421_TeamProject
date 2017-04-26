@@ -1,17 +1,16 @@
 package utilities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Recipe implements Serializable{
-    private String name;
-    
-    public Recipe(String name) {
-        this.name = name;
+public class Recipe extends RecipeAbs implements Serializable{
+    public Recipe(String name, String directions, ArrayList<RecipeIngredientIF> baseIngredients) {
+        super(name, directions, baseIngredients);
     }
-    public String getName() {
-        return name;
+    public Recipe(String name, String directions, String prepTime, String cookTime, ArrayList<RecipeIngredientIF> baseIngredients) {
+        super (name, directions, prepTime, cookTime, baseIngredients);
     }
-    public void setName(String name) {
-        this.name = name;
+    public Recipe(String name, String desc, String directions, String prepTime, String cookTime, ArrayList<RecipeIngredientIF> baseIngredients) {
+        super(name, desc, directions, prepTime, cookTime, baseIngredients);
     }
 }

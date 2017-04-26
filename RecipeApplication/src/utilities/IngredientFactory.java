@@ -6,9 +6,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class IngredientFactory {
-    private static final HashMap<String, Ingredient> ingredientList = new HashMap();
+    private static final HashMap<String, IngredientIF> ingredientList = new HashMap();
+    private static IngredientFactory instance;
     
-    static void refreshIngredientList() {
+    private IngredientFactory() { }
+    
+    public static IngredientFactory getFactory() { 
+        if (instance == null) {
+            instance = new IngredientFactory();
+        }
+        return instance;
+    }
+    
+    public void refreshIngredientList() {
         try {
             //Pull ingredients from database. Store them into an array.
             //This occurs once at the start of the program.
@@ -17,7 +27,7 @@ public class IngredientFactory {
             while (rs.next()) {
                 int id = rs.getInt("ingredient_id");
                 String name = rs.getString("ingredient_name");
-                Ingredient pulledIngredient = new Ingredient(id, name);
+                IngredientIF pulledIngredient = new Ingredient(id, name);
                 if (!ingredientList.containsKey(name)) {
                     ingredientList.put(name, pulledIngredient);
                 }
@@ -27,7 +37,7 @@ public class IngredientFactory {
         }
     }
     
-    public Ingredient getIngredient(String ingredientName) {
+    public IngredientIF getIngredient(String ingredientName) {
         if (ingredientList.containsKey(ingredientName)) {
             return ingredientList.get(ingredientName);
         }

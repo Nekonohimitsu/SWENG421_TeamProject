@@ -1,20 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package application;
 
-/**
- *
- * @author iimax
- */
+import java.util.ArrayList;
+import utilities.RecipeIngredientIF;
+
 public class DynamicPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form newPanel
-     */
-    public DynamicPanel() {
+    private int ID;
+    private ArrayList<RecipeIngredientIF> ingredientList = new ArrayList<>();
+
+    private DynamicPanel() {
+    }
+
+    public DynamicPanel(int ID) {
+        System.out.println("ID: " + ID);
+        this.ID = ID;
         initComponents();
+    }
+
+    public int getID() {
+        return this.ID;
+    }
+
+    public void setIngredientList(ArrayList<RecipeIngredientIF> il) {
+        this.ingredientList = il;
+        String list = "";
+        for (RecipeIngredientIF r : ingredientList)
+            list += r.toString() + "\n";
+        friendIngTextArea.setText(list);
     }
 
     /**
