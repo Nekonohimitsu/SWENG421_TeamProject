@@ -72,7 +72,10 @@ public class Client extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         modModeLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
+        toolMenu = new javax.swing.JMenu();
+        modItem = new javax.swing.JMenuItem();
+        filterItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
         Instructions = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -298,7 +301,7 @@ public class Client extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -308,7 +311,29 @@ public class Client extends javax.swing.JFrame {
 
         getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
 
-        jMenu.setText("Help");
+        toolMenu.setText("Tools");
+
+        modItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        modItem.setText("Add Recipe");
+        modItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modItemActionPerformed(evt);
+            }
+        });
+        toolMenu.add(modItem);
+
+        filterItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        filterItem.setText("Filter");
+        filterItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterItemActionPerformed(evt);
+            }
+        });
+        toolMenu.add(filterItem);
+
+        jMenuBar.add(toolMenu);
+
+        helpMenu.setText("Help");
 
         Instructions.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         Instructions.setText("Instructions");
@@ -317,9 +342,9 @@ public class Client extends javax.swing.JFrame {
                 InstructionsActionPerformed(evt);
             }
         });
-        jMenu.add(Instructions);
+        helpMenu.add(Instructions);
 
-        jMenuBar.add(jMenu);
+        jMenuBar.add(helpMenu);
 
         setJMenuBar(jMenuBar);
 
@@ -359,6 +384,16 @@ public class Client extends javax.swing.JFrame {
         //amount? amount type?
         addIngredient(ingredient, 1.0, "cup");
     }//GEN-LAST:event_addIngredientButtonActionPerformed
+
+    private void modItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modItemActionPerformed
+        RecipeIF newRecipe = new Recipe("","","","",null);
+        ModificationFrame modificationFrame = ModificationFrame.getInstance(newRecipe,this);
+        modificationFrame.setVisible(true);
+    }//GEN-LAST:event_modItemActionPerformed
+
+    private void filterItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filterItemActionPerformed
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
@@ -448,13 +483,15 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JPanel bodyPanel;
     private javax.swing.JLabel chooseRecipeLabel;
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JMenuItem filterItem;
     private javax.swing.JPanel friendsPanel;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel ingredientsPanel;
-    private javax.swing.JMenu jMenu;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JMenuItem modItem;
     private javax.swing.JLabel modModeLabel;
     private javax.swing.JList<String> myIngredientList;
     private javax.swing.JScrollPane myScrollPane;
@@ -473,5 +510,6 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JLabel selfLabel1;
     private javax.swing.JLabel selfLabel2;
     private javax.swing.JPanel selfPanel;
+    private javax.swing.JMenu toolMenu;
     // End of variables declaration//GEN-END:variables
 }
