@@ -321,9 +321,11 @@ public class ModificationFrame extends javax.swing.JFrame {
     private void ingListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingListMouseClicked
         if (evt.getClickCount() > 1) { //Double clicked
             int index = ingList.getSelectedIndex();
-            RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
-            recipeBeingModified.removeIngredient(ri);
-            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+            if (index != -1) {
+                RecipeIngredientIF ri = recipeBeingModified.getIngredients().get(index);
+                recipeBeingModified.removeIngredient(ri);
+                Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+            }
         }
     }//GEN-LAST:event_ingListMouseClicked
 
