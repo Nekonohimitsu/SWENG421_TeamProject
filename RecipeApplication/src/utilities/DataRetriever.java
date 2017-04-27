@@ -80,6 +80,16 @@ public class DataRetriever extends Thread {
             Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void sendFilter(String oldIng, String newIng) {
+        String[] content = {oldIng, newIng};
+        SendableMessage m = new Message(Server.ADD_FILTER_TITLE, content);
+        try {
+            os.writeObject(m);
+        } catch (IOException ex) {
+            Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void sendRecipeListToClient(ArrayList<RecipeIF> recipeList) {
         c.displayRecipeList(recipeList);

@@ -6,8 +6,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import utilities.*;
 
@@ -383,8 +381,15 @@ public class Client extends javax.swing.JFrame {
 
     private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngredientButtonActionPerformed
         String ingredient = addIngredientTextField.getText();
-        //amount? amount type?
-        addIngredient(ingredient, 1.0, "cup");
+        String amountType = qtyTypeField.getText();
+        double amount;
+        try {
+             amount = Double.parseDouble(qtyField.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid amount");
+            return;
+        }
+        addIngredient(ingredient, amount, amountType);
     }//GEN-LAST:event_addIngredientButtonActionPerformed
 
     private void modItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modItemActionPerformed
@@ -394,11 +399,12 @@ public class Client extends javax.swing.JFrame {
     }//GEN-LAST:event_modItemActionPerformed
 
     private void filterItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterItemActionPerformed
-        // TODO add your handling code here:
+        FilterFrame filterFrame = FilterFrame.getInstance(this);
+        filterFrame.setVisible(true);
     }//GEN-LAST:event_filterItemActionPerformed
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
-        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, amount, amount_type);
         if (ri != null) {
             myIngredients.add(ri);
             Utility.modifyList(myIngredientList, myIngredients);
@@ -476,6 +482,10 @@ public class Client extends javax.swing.JFrame {
     }
     public void setResponse(boolean response) {
         serverResponse = response;
+    }
+    
+    public void sendFilter(String oldIng, String newIng) {
+        dr.sendFilter(oldIng, newIng);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

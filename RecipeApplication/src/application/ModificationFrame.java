@@ -287,7 +287,16 @@ public class ModificationFrame extends javax.swing.JFrame {
     private void addIngButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngButtonActionPerformed
         // Add Ingredient Button 
         String ingredientName = ingField.getText();
-        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
+        double amount;
+        try {
+             amount = Double.parseDouble(qtyField.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid amount");
+            return;
+        }
+        String amountType = qtyTypeField.getText();
+        
+        RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, amount, amountType);
         if (ri != null) {
             recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
             Utility.modifyList(ingList, recipeBeingModified.getIngredients());

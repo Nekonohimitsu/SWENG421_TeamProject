@@ -59,6 +59,7 @@ class ServerThread extends Thread {
                         //Transfer request to server. 
                         sendMessage(new Message(Server.MODIFY_RECIPE, m.getMessageContent(), this));
                     case Server.ADD_FILTER_TITLE:
+                        sendMessage(new Message(Server.ADD_FILTER_TITLE, m.getMessageContent(), this));
                         break;
                     default:
                         break;
