@@ -7,12 +7,16 @@ import server.IngredientFactory;
 
 public class Utility {
     public static DefaultListModel modifyList(JList list, ArrayList info) {
-        DefaultListModel lm = new DefaultListModel();
-        for (Object o : info) {
-            lm.addElement(o);
+        if (info != null){
+            DefaultListModel lm = new DefaultListModel();
+
+            for (Object o : info) {
+                lm.addElement(o);
+            }
+            list.setModel(lm);
+            return lm;
         }
-        list.setModel(lm);
-        return lm;
+        return null;
     }
     
     public static RecipeIngredientIF createRecipeIngredient(String ingredientName, double amount, String amount_type) {

@@ -52,9 +52,12 @@ public class Client extends javax.swing.JFrame {
         myScrollPane = new javax.swing.JScrollPane();
         myIngredientList = new javax.swing.JList<>();
         removeIngLabel = new javax.swing.JLabel();
+        qtyField = new javax.swing.JTextField();
+        qtyTypeField = new javax.swing.JTextField();
+        selfLabel1 = new javax.swing.JLabel();
+        selfLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         friendsPanel = new javax.swing.JPanel();
-        friendsLabel = new javax.swing.JLabel();
-        friendScrollPane = new javax.swing.JScrollPane();
         mainPanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
@@ -69,7 +72,10 @@ public class Client extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         modModeLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
+        toolMenu = new javax.swing.JMenu();
+        modItem = new javax.swing.JMenuItem();
+        filterItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
         Instructions = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,21 +85,19 @@ public class Client extends javax.swing.JFrame {
         setFont(new java.awt.Font("Lucida Sans Unicode", 0, 18)); // NOI18N
         setForeground(java.awt.Color.white);
         setLocation(new java.awt.Point(100, 100));
-        setResizable(false);
 
         bodyPanel.setLayout(new java.awt.BorderLayout());
 
-        ingredientsPanel.setBackground(new java.awt.Color(47, 68, 54));
+        ingredientsPanel.setBackground(new java.awt.Color(198, 222, 201));
         ingredientsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         ingredientsPanel.setMinimumSize(new java.awt.Dimension(300, 32));
-        ingredientsPanel.setPreferredSize(new java.awt.Dimension(300, 674));
-        ingredientsPanel.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
+        ingredientsPanel.setPreferredSize(new java.awt.Dimension(300, 32));
+        ingredientsPanel.setLayout(new javax.swing.BoxLayout(ingredientsPanel, javax.swing.BoxLayout.Y_AXIS));
 
-        selfPanel.setBackground(new java.awt.Color(137, 148, 139));
+        selfPanel.setBackground(new java.awt.Color(198, 222, 201));
 
         selfLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        selfLabel.setForeground(new java.awt.Color(47, 68, 54));
-        selfLabel.setText("My Ingredients");
+        selfLabel.setText("Qty:");
 
         addIngredientButton.setText("+");
         addIngredientButton.addActionListener(new java.awt.event.ActionListener() {
@@ -115,9 +119,20 @@ public class Client extends javax.swing.JFrame {
         });
         myScrollPane.setViewportView(myIngredientList);
 
-        removeIngLabel.setForeground(new java.awt.Color(167, 198, 167));
+        removeIngLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         removeIngLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         removeIngLabel.setText("double-click to remove");
+
+        qtyTypeField.setText("oz");
+
+        selfLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        selfLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        selfLabel1.setText("My Ingredients");
+        selfLabel1.setMinimumSize(new java.awt.Dimension(0, 0));
+        selfLabel1.setPreferredSize(null);
+
+        selfLabel2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        selfLabel2.setText("Name:");
 
         javax.swing.GroupLayout selfPanelLayout = new javax.swing.GroupLayout(selfPanel);
         selfPanel.setLayout(selfPanelLayout);
@@ -125,78 +140,73 @@ public class Client extends javax.swing.JFrame {
             selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selfPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
-                    .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(removeIngLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(myScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selfLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(selfPanelLayout.createSequentialGroup()
-                        .addComponent(addIngredientTextField)
+                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(selfPanelLayout.createSequentialGroup()
+                                .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(21, 21, 21))
+                            .addComponent(selfLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addIngredientButton))
-                    .addComponent(removeIngLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(selfPanelLayout.createSequentialGroup()
+                                .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(qtyTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(addIngredientButton))
+                            .addComponent(addIngredientTextField))))
+                .addGap(83, 83, 83))
         );
         selfPanelLayout.setVerticalGroup(
             selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selfPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(selfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(addIngredientTextField)
-                    .addComponent(addIngredientButton, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                .addGap(7, 7, 7)
+                .addComponent(selfLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addIngredientTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selfLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(selfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(qtyTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addIngredientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
-                .addComponent(myScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(myScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(removeIngLabel)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
 
         ingredientsPanel.add(selfPanel);
 
-        friendsPanel.setBackground(new java.awt.Color(137, 148, 139));
+        jScrollPane1.setBorder(null);
 
-        friendsLabel.setBackground(new java.awt.Color(159, 183, 173));
-        friendsLabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        friendsLabel.setForeground(new java.awt.Color(47, 68, 54));
-        friendsLabel.setText("Also in this session:");
+        friendsPanel.setBackground(new java.awt.Color(198, 222, 201));
+        friendsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Also in this session"));
+        friendsPanel.setAutoscrolls(true);
+        friendsPanel.setLayout(new javax.swing.BoxLayout(friendsPanel, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane1.setViewportView(friendsPanel);
 
-        friendScrollPane.setBackground(new java.awt.Color(159, 183, 173));
-        friendScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        javax.swing.GroupLayout friendsPanelLayout = new javax.swing.GroupLayout(friendsPanel);
-        friendsPanel.setLayout(friendsPanelLayout);
-        friendsPanelLayout.setHorizontalGroup(
-            friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(friendsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(friendScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
-                    .addComponent(friendsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        friendsPanelLayout.setVerticalGroup(
-            friendsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(friendsPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(friendsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(friendScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        ingredientsPanel.add(friendsPanel);
+        ingredientsPanel.add(jScrollPane1);
 
         bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_END);
 
         mainPanel.setLayout(new java.awt.BorderLayout());
 
-        searchPanel.setBackground(new java.awt.Color(198, 222, 201));
+        searchPanel.setBackground(new java.awt.Color(137, 148, 139));
 
         searchTextField.setText("Enter recipe name");
 
-        searchButton.setBackground(new java.awt.Color(137, 148, 139));
-        searchButton.setForeground(new java.awt.Color(218, 240, 218));
+        searchButton.setBackground(new java.awt.Color(218, 240, 218));
+        searchButton.setForeground(new java.awt.Color(137, 148, 139));
         searchButton.setText("Search");
+        searchButton.setToolTipText("");
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -221,10 +231,10 @@ public class Client extends javax.swing.JFrame {
 
         mainPanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
 
-        contentPanel.setBackground(new java.awt.Color(198, 222, 201));
+        contentPanel.setBackground(new java.awt.Color(137, 148, 139));
+        contentPanel.setToolTipText("");
 
         chooseRecipeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        chooseRecipeLabel.setForeground(new java.awt.Color(47, 68, 54));
         chooseRecipeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         chooseRecipeLabel.setText("Recipe List");
         chooseRecipeLabel.setToolTipText("");
@@ -284,14 +294,14 @@ public class Client extends javax.swing.JFrame {
                 .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recipesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(0, 0, 0)
                 .addComponent(modModeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(recipePane, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -301,7 +311,29 @@ public class Client extends javax.swing.JFrame {
 
         getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
 
-        jMenu.setText("Help");
+        toolMenu.setText("Tools");
+
+        modItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        modItem.setText("Add Recipe");
+        modItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modItemActionPerformed(evt);
+            }
+        });
+        toolMenu.add(modItem);
+
+        filterItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        filterItem.setText("Filter");
+        filterItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterItemActionPerformed(evt);
+            }
+        });
+        toolMenu.add(filterItem);
+
+        jMenuBar.add(toolMenu);
+
+        helpMenu.setText("Help");
 
         Instructions.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         Instructions.setText("Instructions");
@@ -310,9 +342,9 @@ public class Client extends javax.swing.JFrame {
                 InstructionsActionPerformed(evt);
             }
         });
-        jMenu.add(Instructions);
+        helpMenu.add(Instructions);
 
-        jMenuBar.add(jMenu);
+        jMenuBar.add(helpMenu);
 
         setJMenuBar(jMenuBar);
 
@@ -328,22 +360,6 @@ public class Client extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_InstructionsActionPerformed
 
-    private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngredientButtonActionPerformed
-        String ingredient = addIngredientTextField.getText();
-        //amount? amount type?
-        addIngredient(ingredient, 1.0, "cup");
-    }//GEN-LAST:event_addIngredientButtonActionPerformed
-
-    private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
-        if (evt.getClickCount() > 1) { //Double clicked
-            int index = myIngredientList.getSelectedIndex();
-            RecipeIngredientIF ri = myIngredients.get(index);
-            myIngredients.remove(index);
-            Utility.modifyList(myIngredientList, myIngredients);
-            dr.removeIngredient(ri);
-        }
-    }//GEN-LAST:event_myIngredientListMouseClicked
-
     private void recipeListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recipeListMouseClicked
         if (evt.getClickCount() > 1) {//double clicked
             int index = recipeList.getSelectedIndex();
@@ -352,6 +368,34 @@ public class Client extends javax.swing.JFrame {
             modificationFrame.setVisible(true);
         }
     }//GEN-LAST:event_recipeListMouseClicked
+
+    private void myIngredientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myIngredientListMouseClicked
+        if (evt.getClickCount() > 1) { //Double clicked
+            int index = myIngredientList.getSelectedIndex();
+            if (index != -1) {
+                RecipeIngredientIF ri = myIngredients.get(index);
+                myIngredients.remove(index);
+                Utility.modifyList(myIngredientList, myIngredients);
+                dr.removeIngredient(ri);
+            }
+        }
+    }//GEN-LAST:event_myIngredientListMouseClicked
+
+    private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngredientButtonActionPerformed
+        String ingredient = addIngredientTextField.getText();
+        //amount? amount type?
+        addIngredient(ingredient, 1.0, "cup");
+    }//GEN-LAST:event_addIngredientButtonActionPerformed
+
+    private void modItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modItemActionPerformed
+        RecipeIF newRecipe = new Recipe("","","","",null);
+        ModificationFrame modificationFrame = ModificationFrame.getInstance(newRecipe,this);
+        modificationFrame.setVisible(true);
+    }//GEN-LAST:event_modItemActionPerformed
+
+    private void filterItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filterItemActionPerformed
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, 1.0, "cup");
@@ -406,7 +450,7 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void addPanel(DynamicPanel p) {
-        friendsPanel.setLayout(new java.awt.BorderLayout());
+        friendsPanel.setLayout(new java.awt.GridLayout());
         friendsPanel.add(p);
         friendsPanel.revalidate();
         friendsPanel.repaint();
@@ -441,17 +485,20 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JPanel bodyPanel;
     private javax.swing.JLabel chooseRecipeLabel;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JScrollPane friendScrollPane;
-    private javax.swing.JLabel friendsLabel;
+    private javax.swing.JMenuItem filterItem;
     private javax.swing.JPanel friendsPanel;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel ingredientsPanel;
-    private javax.swing.JMenu jMenu;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JMenuItem modItem;
     private javax.swing.JLabel modModeLabel;
     private javax.swing.JList<String> myIngredientList;
     private javax.swing.JScrollPane myScrollPane;
+    private javax.swing.JTextField qtyField;
+    private javax.swing.JTextField qtyTypeField;
     private javax.swing.JLabel recipeLabel;
     private javax.swing.JList<String> recipeList;
     private javax.swing.JScrollPane recipePane;
@@ -462,6 +509,9 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JPanel searchPanel;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JLabel selfLabel;
+    private javax.swing.JLabel selfLabel1;
+    private javax.swing.JLabel selfLabel2;
     private javax.swing.JPanel selfPanel;
+    private javax.swing.JMenu toolMenu;
     // End of variables declaration//GEN-END:variables
 }
