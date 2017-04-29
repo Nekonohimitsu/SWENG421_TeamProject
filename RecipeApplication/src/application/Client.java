@@ -54,8 +54,8 @@ public class Client extends javax.swing.JFrame {
         qtyTypeField = new javax.swing.JTextField();
         selfLabel1 = new javax.swing.JLabel();
         selfLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        friendsPanel = new javax.swing.JPanel();
+        friendsPane = new javax.swing.JScrollPane();
+        friendPanel = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
@@ -65,10 +65,10 @@ public class Client extends javax.swing.JFrame {
         recipesScrollPane = new javax.swing.JScrollPane();
         recipeList = new javax.swing.JList<>();
         recipeLabel = new javax.swing.JLabel();
-        recipePane = new javax.swing.JScrollPane();
-        recipeTextArea = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         modModeLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        recipeEditorPane = new javax.swing.JEditorPane();
         jMenuBar = new javax.swing.JMenuBar();
         toolMenu = new javax.swing.JMenu();
         modItem = new javax.swing.JMenuItem();
@@ -183,15 +183,16 @@ public class Client extends javax.swing.JFrame {
 
         ingredientsPanel.add(selfPanel);
 
-        jScrollPane1.setBorder(null);
+        friendsPane.setBorder(null);
+        friendsPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        friendsPanel.setBackground(new java.awt.Color(198, 222, 201));
-        friendsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Also in this session"));
-        friendsPanel.setAutoscrolls(true);
-        friendsPanel.setLayout(new javax.swing.BoxLayout(friendsPanel, javax.swing.BoxLayout.Y_AXIS));
-        jScrollPane1.setViewportView(friendsPanel);
+        friendPanel.setBackground(new java.awt.Color(198, 222, 201));
+        friendPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Also in this session"));
+        friendPanel.setAutoscrolls(true);
+        friendPanel.setLayout(new javax.swing.BoxLayout(friendPanel, javax.swing.BoxLayout.Y_AXIS));
+        friendsPane.setViewportView(friendPanel);
 
-        ingredientsPanel.add(jScrollPane1);
+        ingredientsPanel.add(friendsPane);
 
         bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_END);
 
@@ -262,33 +263,27 @@ public class Client extends javax.swing.JFrame {
         recipeLabel.setText("Recipe");
         recipeLabel.setAlignmentX(0.5F);
 
-        recipeTextArea.setEditable(false);
-        recipeTextArea.setColumns(20);
-        recipeTextArea.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        recipeTextArea.setLineWrap(true);
-        recipeTextArea.setRows(5);
-        recipeTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        recipePane.setViewportView(recipeTextArea);
-
         jSeparator1.setForeground(new java.awt.Color(221, 237, 221));
 
         modModeLabel.setForeground(new java.awt.Color(64, 83, 71));
         modModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         modModeLabel.setText("double-click to edit recipe");
 
+        jScrollPane1.setViewportView(recipeEditorPane);
+
         javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
         contentPanel.setLayout(contentPanelLayout);
         contentPanelLayout.setHorizontalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contentPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE)
-                    .addComponent(recipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(recipesScrollPane)
-                    .addComponent(modModeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(recipeLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chooseRecipeLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(recipesScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(modModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE))
                 .addContainerGap())
         );
         contentPanelLayout.setVerticalGroup(
@@ -304,7 +299,7 @@ public class Client extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recipeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(recipePane, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -476,16 +471,15 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void addPanel(DynamicPanel p) {
-        friendsPanel.setLayout(new java.awt.GridLayout());
-        friendsPanel.add(p);
-        friendsPanel.revalidate();
-        friendsPanel.repaint();
+        friendPanel.add(p);
+        friendPanel.revalidate();
+        friendPanel.repaint();
     }
 
     public void removePanel(DynamicPanel p) {
-        friendsPanel.remove(p);
-        friendsPanel.revalidate();
-        friendsPanel.repaint();
+        friendPanel.remove(p);
+        friendPanel.revalidate();
+        friendPanel.repaint();
     }
     
     public boolean storeRecipe(RecipeIF r) {
@@ -520,7 +514,8 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JLabel chooseRecipeLabel;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JMenuItem filterItem;
-    private javax.swing.JPanel friendsPanel;
+    private javax.swing.JPanel friendPanel;
+    private javax.swing.JScrollPane friendsPane;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel ingredientsPanel;
     private javax.swing.JMenuBar jMenuBar;
@@ -533,10 +528,9 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JScrollPane myScrollPane;
     private javax.swing.JTextField qtyField;
     private javax.swing.JTextField qtyTypeField;
+    private javax.swing.JEditorPane recipeEditorPane;
     private javax.swing.JLabel recipeLabel;
     private javax.swing.JList<String> recipeList;
-    private javax.swing.JScrollPane recipePane;
-    private javax.swing.JTextArea recipeTextArea;
     private javax.swing.JScrollPane recipesScrollPane;
     private javax.swing.JLabel removeIngLabel;
     private javax.swing.JButton searchButton;
