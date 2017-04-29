@@ -30,7 +30,7 @@ public class Utility {
     public static boolean checkForRepeatIngredient(RecipeIngredientIF ri, ArrayList<RecipeIngredientIF> ingredients) {
         if (ingredients != null){
             for (RecipeIngredientIF ingredient : ingredients) {
-                if (ingredient.getIngredient().equals(ri.getIngredient()))
+                if (ingredient.getIngredient().toUpperCase().equals(ri.getIngredient().toUpperCase()))
                         return true;
             }
         }

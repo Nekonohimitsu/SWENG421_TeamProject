@@ -106,6 +106,12 @@ public class DataRetriever extends Thread {
     private void sendRecipeListToClient(ArrayList<RecipeIF> recipeList) {
         c.displayRecipeList(recipeList);
     }
+    
+    private void sendRecipeToClient(RecipeIF recipe) {
+        ArrayList<RecipeIF> rl = new ArrayList();
+        rl.add(recipe);
+        c.displayRecipeList(rl);
+    }
 
     private void updateIngredientListInPanel(int ID, ArrayList<RecipeIngredientIF> il) {
         for (DynamicPanel p : otherClientPanels) {
@@ -161,8 +167,10 @@ public class DataRetriever extends Thread {
                             }
                             break;
                         case Server.SEARCH_RECIPE_RESPONSE:
-                            RecipeIF result = (RecipeIF)incomingObject.getMessageContent();
-                            c.displaySearchResult(result);
+                            SimpleEntry result = (SimpleEntry)incomingObject.getMessageContent();
+                            sendRecipeToClient((RecipeIF)result.getValue());
+                            c.setSearchText("Client of ID " + clientID +
+                                    " has searched for '" + result.getKey() + "'");
                             break;
                         default:
                             break;
