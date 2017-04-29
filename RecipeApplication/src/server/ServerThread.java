@@ -55,12 +55,16 @@ class ServerThread extends Thread {
                         RecipeIngredientIF ingredientToRemove = (RecipeIngredientIF)m.getMessageContent();
                         ingredientList.remove(ingredientToRemove);
                         sendMessage(new Message(Server.SEND_INGREDIENT_LIST_TITLE, ingredientList, this));
+                        break;
                     case Server.MODIFY_RECIPE:
                         //Transfer request to server. 
                         sendMessage(new Message(Server.MODIFY_RECIPE, m.getMessageContent(), this));
+                        break;
                     case Server.ADD_FILTER_TITLE:
                         sendMessage(new Message(Server.ADD_FILTER_TITLE, m.getMessageContent(), this));
                         break;
+                    case Server.SEARCH_RECIPE:
+                        sendMessage(new Message(Server.SEARCH_RECIPE, m.getMessageContent(), this));
                     default:
                         break;
                 }

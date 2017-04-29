@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -38,6 +39,8 @@ public class Server {
     public static final String ADD_FILTER_TITLE = "NewFilterTitle";
     public static final String MODIFY_RECIPE = "ModifyRecipe";
     public static final String MODIFY_RECIPE_RESPONSE = "ModifyRecipeResponse";
+    public static final String SEARCH_RECIPE = "SearchForRecipe";
+    public static final String SEARCH_RECIPE_RESPONSE = "SearchResult";
 
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(5000);
@@ -126,6 +129,21 @@ public class Server {
             filter = new ReplacementFilter(filter, oldIng, newIng);
         }
     }
+    
+    private static void searchForRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
+        String recipeToSearchFor = (String) m.getMessageContent();
+        ArrayList<RecipeIF> fullRecipeList = getRecipes();
+        RecipeIF recipe = null;
+        for (RecipeIF r : fullRecipeList) {
+            if (r.getName().equals(recipeToSearchFor)) {
+                recipe = r;
+                break;
+            }
+        }
+        if (filter != null && recipe != null) recipe = filter.applyReplacement(recipe);
+        SendableMessage message = new Message(SEARCH_RECIPE_RESPONSE, recipe);
+        sendingClient.getOutputStream().writeObject(message);
+    }
 
     static void sendMessage(SendableMessage m) throws IOException {
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
@@ -148,6 +166,9 @@ public class Server {
                     break;
                 case ADD_FILTER_TITLE:
                     applyFilter(m);
+                    break;
+                case SEARCH_RECIPE:
+                    searchForRecipe(m, sendingClient);
                     break;
                 default:
                     break;

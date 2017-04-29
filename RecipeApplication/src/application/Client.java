@@ -205,6 +205,11 @@ public class Client extends javax.swing.JFrame {
         searchButton.setForeground(new java.awt.Color(137, 148, 139));
         searchButton.setText("Search");
         searchButton.setToolTipText("");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -359,11 +364,15 @@ public class Client extends javax.swing.JFrame {
     }//GEN-LAST:event_InstructionsActionPerformed
 
     private void recipeListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recipeListMouseClicked
-        if (evt.getClickCount() > 1) {//double clicked
-            int index = recipeList.getSelectedIndex();
+        int index = recipeList.getSelectedIndex();
+        if (index != -1) {
             RecipeIF selectedRecipe = currentRecipes.get(index);
-            ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
-            modificationFrame.setVisible(true);
+            if (evt.getClickCount() > 1) {//double clicked
+                ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
+                modificationFrame.setVisible(true);
+            }  else { //Single click
+                recipeTextArea.setText(Utility.formatRecipe(selectedRecipe));
+            }
         }
     }//GEN-LAST:event_recipeListMouseClicked
 
@@ -402,15 +411,26 @@ public class Client extends javax.swing.JFrame {
         FilterFrame filterFrame = FilterFrame.getInstance(this);
         filterFrame.setVisible(true);
     }//GEN-LAST:event_filterItemActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        String recipeName = searchTextField.getText();
+        dr.sendSearchRequest(recipeName);
+        
+    }//GEN-LAST:event_searchButtonActionPerformed
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, amount, amount_type);
-        if (ri != null) {
-            myIngredients.add(ri);
-            Utility.modifyList(myIngredientList, myIngredients);
-            dr.addIngredient(ri);
+        if (Utility.checkForRepeatIngredient(ri, myIngredients)) {
+            JOptionPane.showMessageDialog(null, "You already have that ingredient."
+                    + " Please delete it and add the new value if you have more.");
         } else {
-            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+            if (ri != null) {
+                myIngredients.add(ri);
+                Utility.modifyList(myIngredientList, myIngredients);
+                dr.addIngredient(ri);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+            }
         }
     }
 
@@ -486,6 +506,10 @@ public class Client extends javax.swing.JFrame {
     
     public void sendFilter(String oldIng, String newIng) {
         dr.sendFilter(oldIng, newIng);
+    }
+    
+    public void displaySearchResult(RecipeIF r) {
+        //Do fun stuff.
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -27,7 +27,19 @@ public class Utility {
         }
     }
     
+    public static boolean checkForRepeatIngredient(RecipeIngredientIF ri, ArrayList<RecipeIngredientIF> ingredients) {
+        for (RecipeIngredientIF ingredient : ingredients) {
+            if (ingredient.getIngredient().equals(ri.getIngredient()))
+                    return true;
+        }
+        return false;
+    }
+    
     public static boolean checkIfIngredientExists(String ingredientName) {
         return IngredientFactory.getFactory().getIngredient(ingredientName) != null;
+    }
+    
+    public static String formatRecipe(RecipeIF r) {
+        return "";
     }
 }
