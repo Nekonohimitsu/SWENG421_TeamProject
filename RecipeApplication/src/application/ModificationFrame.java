@@ -297,11 +297,16 @@ public class ModificationFrame extends javax.swing.JFrame {
         String amountType = qtyTypeField.getText();
         
         RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, amount, amountType);
-        if (ri != null) {
-            recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
-            Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+        if (Utility.checkForRepeatIngredient(ri, recipeBeingModified.getIngredients())) {
+            JOptionPane.showMessageDialog(null, "You already have that ingredient."
+                    + " Please delete it and add the new value if you have more.");
         } else {
-            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+            if (ri != null) {
+                recipeBeingModified = new RecipeWrapper(recipeBeingModified, ri);
+                Utility.modifyList(ingList, recipeBeingModified.getIngredients());
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+            }
         }
     }//GEN-LAST:event_addIngButtonActionPerformed
 

@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.Message;
@@ -81,6 +84,15 @@ public class DataRetriever extends Thread {
         }
     }
     
+    public void sendSearchRequest(String recipeName) {
+        SendableMessage m = new Message(Server.SEARCH_RECIPE, recipeName);
+        try {
+            os.writeObject(m);
+        } catch (IOException ex) {
+            Logger.getLogger(DataRetriever.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void sendFilter(String oldIng, String newIng) {
         String[] content = {oldIng, newIng};
         SendableMessage m = new Message(Server.ADD_FILTER_TITLE, content);
@@ -147,6 +159,11 @@ public class DataRetriever extends Thread {
                                 c.setResponse(response);
                                 c.notify();
                             }
+                            break;
+                        case Server.SEARCH_RECIPE_RESPONSE:
+                            RecipeIF result = (RecipeIF)incomingObject.getMessageContent();
+                            c.displaySearchResult(result);
+                            break;
                         default:
                             break;
                     }
