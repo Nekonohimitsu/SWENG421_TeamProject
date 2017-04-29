@@ -31,4 +31,15 @@ public abstract class ReplacementFilterAbs implements ReplacementFilterIF{
         }
         return rl;
     }
+    
+    @Override
+    public RecipeIF applyReplacement(RecipeIF r) {
+        if (filter != null) r = filter.applyReplacement(r);
+        for (RecipeIngredientIF ri : r.getIngredients()) {
+            if (ri.getIngredient().equals(ingredientToBeReplaced)) {
+              ri.setIngredient(ingredientReplacing);  
+            }
+        }
+        return r;
+    }
 }
