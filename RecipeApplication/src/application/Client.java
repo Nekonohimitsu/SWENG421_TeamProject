@@ -366,7 +366,7 @@ public class Client extends javax.swing.JFrame {
                 ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
                 modificationFrame.setVisible(true);
             }  else { //Single click
-                recipeTextArea.setText(Utility.formatRecipe(selectedRecipe));
+                recipeEditorPane.setText(Utility.formatRecipe(selectedRecipe));
             }
         }
     }//GEN-LAST:event_recipeListMouseClicked
@@ -502,8 +502,8 @@ public class Client extends javax.swing.JFrame {
         dr.sendFilter(oldIng, newIng);
     }
     
-    public void displaySearchResult(RecipeIF r) {
-        //Do fun stuff.
+    public void setSearchText(String text) {
+        searchTextField.setText(text);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

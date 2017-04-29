@@ -28,8 +28,8 @@ public class IngredientFactory {
                 int id = rs.getInt("ingredient_id");
                 String name = rs.getString("ingredient_name");
                 IngredientIF pulledIngredient = new Ingredient(id, name);
-                if (!ingredientList.containsKey(name)) {
-                    ingredientList.put(name, pulledIngredient);
+                if (!ingredientList.containsKey(name.toUpperCase())) {
+                    ingredientList.put(name.toUpperCase(), pulledIngredient);
                 }
             }          
         } catch (SQLException ex) {
@@ -38,8 +38,8 @@ public class IngredientFactory {
     }
     
     public IngredientIF getIngredient(String ingredientName) {
-        if (ingredientList.containsKey(ingredientName)) {
-            return ingredientList.get(ingredientName);
+        if (ingredientList.containsKey(ingredientName.toUpperCase())) {
+            return ingredientList.get(ingredientName.toUpperCase());
         }
         return null;
     }
