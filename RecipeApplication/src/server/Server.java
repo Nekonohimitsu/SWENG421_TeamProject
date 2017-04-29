@@ -22,6 +22,7 @@ public class Server {
     private final static IngredientFactory factory = IngredientFactory.getFactory();
     private static ArrayList<RecipeIF> listOfRecipes = new ArrayList<>();
     private final static HashMap<ServerThread, ArrayList<RecipeIngredientIF>> listOfAllIngredients = new HashMap<>();
+    private static ReplacementFilterIF filter = null;
     
     /* Message Titles -
      * These specify message headers that are used for specific commands
@@ -80,7 +81,9 @@ public class Server {
     }
 
     private static void sendRecipeList(SendableMessage m) throws IOException {
-       SendableMessage recipeMessage = new Message(m.getMessageTitle(), listOfRecipes);
+        ArrayList<RecipeIF> filteredRecipes = listOfRecipes;
+        if (filter != null) filteredRecipes = filter.applyReplacement(listOfRecipes);
+        SendableMessage recipeMessage = new Message(m.getMessageTitle(), filteredRecipes);
         for (ServerThread client : listOfClients) {
             client.getOutputStream().reset(); //
             client.getOutputStream().writeObject(recipeMessage);
@@ -112,6 +115,17 @@ public class Server {
             addRecipeToDatabase(newRecipe);
         }
     }
+    
+    private static void applyFilter(SendableMessage m) {
+        String[] content = (String[])m.getMessageContent();
+        String oldIng = content[0];
+        String newIng = content[1];
+        if (filter == null) {
+            filter = new ReplacementFilter(oldIng, newIng);
+        } else {
+            filter = new ReplacementFilter(filter, oldIng, newIng);
+        }
+    }
 
     static void sendMessage(SendableMessage m) throws IOException {
         ServerThread sendingClient = getClientViaID(m.getMessageSenderID());
@@ -131,6 +145,9 @@ public class Server {
                     break;
                 case MODIFY_RECIPE:
                     checkAndModifyRecipe(m, sendingClient);
+                    break;
+                case ADD_FILTER_TITLE:
+                    applyFilter(m);
                     break;
                 default:
                     break;
