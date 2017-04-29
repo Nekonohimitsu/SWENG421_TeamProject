@@ -112,7 +112,10 @@ public abstract class RecipeAbs implements RecipeIF{
     }
     @Override
     public boolean removeIngredient(RecipeIngredientIF ingredient){
-        return baseIngredients.remove(ingredient);
+        if (baseIngredients != null){
+            return baseIngredients.remove(ingredient);
+        }
+        return false;
     }
     @Override
     public RecipeIF getBaseRecipe() {
