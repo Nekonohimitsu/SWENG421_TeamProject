@@ -130,7 +130,7 @@ public class Server {
         }
     }
     
-    private static void searchForRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
+    private static void searchForRecipe(SendableMessage m) throws IOException {
         String recipeToSearchFor = (String) m.getMessageContent();
         ArrayList<RecipeIF> fullRecipeList = getRecipes();
         RecipeIF recipe = null;
@@ -141,8 +141,11 @@ public class Server {
             }
         }
         if (filter != null && recipe != null) recipe = filter.applyReplacement(recipe);
-        SendableMessage message = new Message(SEARCH_RECIPE_RESPONSE, recipe);
-        sendingClient.getOutputStream().writeObject(message);
+        SimpleEntry result = new SimpleEntry(recipeToSearchFor, recipe);
+        SendableMessage message = new Message(SEARCH_RECIPE_RESPONSE, result);
+        for (ServerThread client : listOfClients) {
+            client.getOutputStream().writeObject(message);
+        }
     }
 
     static void sendMessage(SendableMessage m) throws IOException {
@@ -168,7 +171,7 @@ public class Server {
                     applyFilter(m);
                     break;
                 case SEARCH_RECIPE:
-                    searchForRecipe(m, sendingClient);
+                    searchForRecipe(m);
                     break;
                 default:
                     break;
