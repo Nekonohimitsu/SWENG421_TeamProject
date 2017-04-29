@@ -20,10 +20,14 @@ public class Utility {
     }
     
     public static RecipeIngredientIF createRecipeIngredient(String ingredientName, double amount, String amount_type) {
-        if (IngredientFactory.getFactory().getIngredient(ingredientName) != null) {
+        if (checkIfIngredientExists(ingredientName)) {
             return new RecipeIngredient(ingredientName, amount, amount_type);
         } else {
             return null;
         }
+    }
+    
+    public static boolean checkIfIngredientExists(String ingredientName) {
+        return IngredientFactory.getFactory().getIngredient(ingredientName) != null;
     }
 }

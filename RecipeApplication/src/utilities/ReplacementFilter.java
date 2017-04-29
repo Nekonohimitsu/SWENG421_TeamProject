@@ -5,7 +5,7 @@ public class ReplacementFilter extends ReplacementFilterAbs {
         super(ingredientToBeReplaced, ingredientReplacing);
     }
     
-    public ReplacementFilter(ReplacementFilterIF filter) {
-        super(filter);
+    public ReplacementFilter(ReplacementFilterIF filter, String ingredientToBeReplaced, String ingredientReplacing) {
+        super(filter, ingredientToBeReplaced, ingredientReplacing);
     }
 }

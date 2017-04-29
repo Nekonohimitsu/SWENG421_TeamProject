@@ -1,5 +1,7 @@
 package utilities;
 
+import java.util.ArrayList;
+
 public interface ReplacementFilterIF {
-    RecipeIF applyReplacement(RecipeIF r);
+    ArrayList<RecipeIF> applyReplacement(ArrayList<RecipeIF> rl);
 }
