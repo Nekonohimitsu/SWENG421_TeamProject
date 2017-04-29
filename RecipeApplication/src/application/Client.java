@@ -138,26 +138,30 @@ public class Client extends javax.swing.JFrame {
             selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selfPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(removeIngLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(myScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(selfLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(selfPanelLayout.createSequentialGroup()
-                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selfPanelLayout.createSequentialGroup()
+                        .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(260, 260, 260))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selfPanelLayout.createSequentialGroup()
+                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(removeIngLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(myScrollPane))
+                        .addGap(83, 83, 83))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selfPanelLayout.createSequentialGroup()
+                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(selfLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(selfPanelLayout.createSequentialGroup()
-                                .addComponent(selfLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(21, 21, 21))
-                            .addComponent(selfLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(selfPanelLayout.createSequentialGroup()
-                                .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(selfLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(qtyTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(addIngredientButton))
-                            .addComponent(addIngredientTextField))))
-                .addGap(83, 83, 83))
+                                .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(addIngredientTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(selfPanelLayout.createSequentialGroup()
+                                        .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(qtyTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(addIngredientButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(83, 83, 83))))
         );
         selfPanelLayout.setVerticalGroup(
             selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +172,7 @@ public class Client extends javax.swing.JFrame {
                 .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addIngredientTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selfLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(selfPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(qtyField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,7 +198,7 @@ public class Client extends javax.swing.JFrame {
 
         ingredientsPanel.add(friendsPane);
 
-        bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_END);
+        bodyPanel.add(ingredientsPanel, java.awt.BorderLayout.LINE_START);
 
         mainPanel.setLayout(new java.awt.BorderLayout());
 
@@ -269,6 +273,7 @@ public class Client extends javax.swing.JFrame {
         modModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         modModeLabel.setText("double-click to edit recipe");
 
+        recipeEditorPane.setContentType("text/html"); // NOI18N
         jScrollPane1.setViewportView(recipeEditorPane);
 
         javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
@@ -366,7 +371,7 @@ public class Client extends javax.swing.JFrame {
                 ModificationFrame modificationFrame = ModificationFrame.getInstance(selectedRecipe, this);
                 modificationFrame.setVisible(true);
             }  else { //Single click
-                recipeTextArea.setText(Utility.formatRecipe(selectedRecipe));
+                recipeEditorPane.setText(Utility.formatRecipe(selectedRecipe));
             }
         }
     }//GEN-LAST:event_recipeListMouseClicked
@@ -410,7 +415,7 @@ public class Client extends javax.swing.JFrame {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         String recipeName = searchTextField.getText();
         dr.sendSearchRequest(recipeName);
-        
+
     }//GEN-LAST:event_searchButtonActionPerformed
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {

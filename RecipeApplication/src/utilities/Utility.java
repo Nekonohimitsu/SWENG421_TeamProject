@@ -28,9 +28,11 @@ public class Utility {
     }
     
     public static boolean checkForRepeatIngredient(RecipeIngredientIF ri, ArrayList<RecipeIngredientIF> ingredients) {
-        for (RecipeIngredientIF ingredient : ingredients) {
-            if (ingredient.getIngredient().equals(ri.getIngredient()))
-                    return true;
+        if (ingredients != null){
+            for (RecipeIngredientIF ingredient : ingredients) {
+                if (ingredient.getIngredient().equals(ri.getIngredient()))
+                        return true;
+            }
         }
         return false;
     }

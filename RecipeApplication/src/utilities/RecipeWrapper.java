@@ -14,9 +14,15 @@ public class RecipeWrapper extends Recipe{
     
     @Override
     public ArrayList<RecipeIngredientIF> getIngredients() {
+        ArrayList<RecipeIngredientIF> baseIngredients = getBaseIngredients();
+        ArrayList<RecipeIngredientIF> addedIngredients = getAddedIngredients();
         ArrayList<RecipeIngredientIF> ingredients = new ArrayList<>();
-        ingredients.addAll(getBaseIngredients());
-        ingredients.addAll(getAddedIngredients());
+        if (baseIngredients != null){
+            ingredients.addAll(baseIngredients);
+        }
+        if (addedIngredients != null){
+            ingredients.addAll(addedIngredients);
+        }
         return ingredients;
     }
     
