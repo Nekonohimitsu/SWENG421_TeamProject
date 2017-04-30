@@ -42,6 +42,19 @@ public class Utility {
     }
     
     public static String formatRecipe(RecipeIF r) {
-        return "";
+        String ingredients = "";
+        // for every ingredient in the recipe, create a list item and store in ingredients
+        for (int i = 0; i < r.getIngredients().size(); i++){
+            ingredients = ingredients + "<li>" + r.getIngredients().get(i) + "</li>";
+        }
+        
+        return "<html><head><title>Recipe</title><style>body {font-family: \"Verdana\"; font-size: 9px; padding: 5px;}" +
+                ".name {font-family: \"Bookman Old Style\"; font-size: 20px;} .time {color: grey;}" +
+                ".ingredients {} .directions { font-size: 12px; padding: 5px; background-color: #dbefdc;}</style></head><body>" +
+		"<div class=\"name\"><b>" + r.getName() + "</b></div><br>" +
+                "<div class=\"time\"><b>Prep Time:</b> " + r.getPrepTime() + "<br><b>Cook Time:</b> " + r.getCookTime() + "</div><br>" +
+                "<div><b>Ingredients:</b><ol class=\"ingredients\">" + ingredients + "</ol></div>" +
+                "<hr><div align=\"center\"><b>DIRECTIONS</b></div><p class=\"directions\">" + r.getDirections() + "</p>" +
+                "</body></html>";
     }
 }
