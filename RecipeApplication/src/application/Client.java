@@ -12,6 +12,7 @@ import utilities.*;
 public class Client extends javax.swing.JFrame {
 
     private static DataRetriever dr;
+    private int clientID;
     private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
     private ArrayList<RecipeIF> currentRecipes = new ArrayList<>();
     private boolean serverResponse = false;
@@ -507,6 +508,10 @@ public class Client extends javax.swing.JFrame {
     
     public void setSearchText(String text) {
         searchTextField.setText(text);
+    }
+    
+    public void setClientID(int id) {
+        this.clientID = id;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,6 +44,7 @@ public class Server {
     public static final String MODIFY_RECIPE_RESPONSE = "ModifyRecipeResponse";
     public static final String SEARCH_RECIPE = "SearchForRecipe";
     public static final String SEARCH_RECIPE_RESPONSE = "SearchResult";
+    public static final String CLIENT_ID = "ClientID";
 
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(5000);
@@ -74,6 +75,8 @@ public class Server {
 
     private static void sendNewClient(SendableMessage m, ServerThread sendingClient) throws IOException {
         listOfAllIngredients.put(sendingClient, null);
+        SendableMessage clientIDMsg = new Message(CLIENT_ID, null, sendingClient);
+        sendingClient.getOutputStream().writeObject(clientIDMsg);
         for (ServerThread client : listOfClients) {
             if (client.getOutputStream() != sendingClient.getOutputStream()) {
                 client.getOutputStream().writeObject(m);
