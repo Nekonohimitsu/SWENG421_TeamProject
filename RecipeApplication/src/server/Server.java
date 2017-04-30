@@ -105,7 +105,9 @@ public class Server {
         
         ArrayList<RecipeIF> topRecipeResults = new ArrayList<>();
         for (int i = 0; i < NUM_RECIPE_RETURN; i++) {
-            topRecipeResults.add(filteredRecipes.get(i));
+            if ( i < filteredRecipes.size()) {
+                topRecipeResults.add(filteredRecipes.get(i));
+            }
         }
         
         SendableMessage recipeMessage = new Message(m.getMessageTitle(), topRecipeResults);
