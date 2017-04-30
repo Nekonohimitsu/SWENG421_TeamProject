@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,8 @@ public class Server {
     private static ArrayList<RecipeIF> listOfRecipes = new ArrayList<>();
     private final static HashMap<ServerThread, ArrayList<RecipeIngredientIF>> listOfAllIngredients = new HashMap<>();
     private static ReplacementFilterIF filter = null;
+    
+    private static final int NUM_RECIPE_RETURN = 10;
     
     /* Message Titles -
      * These specify message headers that are used for specific commands
@@ -86,7 +89,26 @@ public class Server {
     private static void sendRecipeList(SendableMessage m) throws IOException {
         ArrayList<RecipeIF> filteredRecipes = listOfRecipes;
         if (filter != null) filteredRecipes = filter.applyReplacement(listOfRecipes);
-        SendableMessage recipeMessage = new Message(m.getMessageTitle(), filteredRecipes);
+        for (RecipeIF r : filteredRecipes) {
+           r.createPercentage(getAllIngs());
+        }
+        
+        /*
+        If r1 > r2, return -1.
+        If r1 < r2, return 1.
+        Else, return 0.
+         */ 
+        filteredRecipes.sort(
+            (RecipeIF r1, RecipeIF r2) ->
+            r1.getPercentage() > r2.getPercentage() ? -1 :
+            r1.getPercentage() < r2.getPercentage() ? 1 : 0);
+        
+        ArrayList<RecipeIF> topRecipeResults = new ArrayList<>();
+        for (int i = 0; i < NUM_RECIPE_RETURN; i++) {
+            topRecipeResults.add(filteredRecipes.get(i));
+        }
+        
+        SendableMessage recipeMessage = new Message(m.getMessageTitle(), topRecipeResults);
         for (ServerThread client : listOfClients) {
             client.getOutputStream().reset(); //
             client.getOutputStream().writeObject(recipeMessage);
@@ -186,6 +208,16 @@ public class Server {
             }
         }
         return null;
+    }
+    
+    private static ArrayList<RecipeIngredientIF> getAllIngs() {
+        ArrayList<RecipeIngredientIF> finalList = new ArrayList<>();
+        for (ArrayList<RecipeIngredientIF> ril : listOfAllIngredients.values()){
+            if (ril != null) {
+                finalList.addAll(ril);
+            }
+        }
+        return finalList;
     }
     
     private static ArrayList<RecipeIF> getRecipes() {
