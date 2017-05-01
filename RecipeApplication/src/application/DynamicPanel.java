@@ -12,7 +12,6 @@ public class DynamicPanel extends javax.swing.JPanel {
     }
 
     public DynamicPanel(int ID) {
-        System.out.println("ID: " + ID);
         this.ID = ID;
         initComponents();
     }
