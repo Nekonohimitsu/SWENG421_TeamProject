@@ -11,6 +11,7 @@ public abstract class RecipeAbs implements RecipeIF{
     private String prepTime;
     private String cookTime;
     private ArrayList<RecipeIngredientIF> baseIngredients = new ArrayList<>();
+    private float percentage = 0.0f;
     
     private RecipeAbs() {}
     public RecipeAbs(String name, String directions, ArrayList<RecipeIngredientIF> baseIngredients) {
@@ -108,7 +109,7 @@ public abstract class RecipeAbs implements RecipeIF{
     
     @Override
     public String toString() {
-        return name + " - Prep Time: " + prepTime + " / CookTime: " + cookTime;
+        return name + " - Prep Time: " + prepTime + " / CookTime: " + cookTime + " (" + percentage * 100 + "%)";
     }
     @Override
     public boolean removeIngredient(RecipeIngredientIF ingredient){
@@ -132,5 +133,30 @@ public abstract class RecipeAbs implements RecipeIF{
     @Override
     public ArrayList<RecipeIngredientIF> getAddedIngredients() {
         return null;
+    }
+    @Override
+    public float getPercentage(){
+        return percentage;
+    }
+    @Override
+    public void createPercentage(ArrayList<RecipeIngredientIF> ingsUserHas){
+        if (ingsUserHas.size() > 0) {
+            float totalCalc = 0.0f;
+            for (RecipeIngredientIF recipeIng : getIngredients()) {
+                double ingUserHasAmtToCups = 0;
+                for (int index : Utility.searchArrayForIngredientName(recipeIng, ingsUserHas)) {
+                    RecipeIngredientIF ingUserHas = ingsUserHas.get(index);
+                    ingUserHasAmtToCups += 
+                        Utility.convertToCups(ingUserHas.getAmountType(), ingUserHas.getAmount());
+                }
+                double recipeIngAmtToCups = Utility.convertToCups(recipeIng.getAmountType(), recipeIng.getAmount());
+                double finalCalc = (ingUserHasAmtToCups / recipeIngAmtToCups);
+                if (finalCalc > 1.0) finalCalc = 1.0;
+                totalCalc += finalCalc;
+            }
+            percentage = Math.round((totalCalc / getIngredients().size()) * 100.0f) / 100.0f; //round to 2 decimals.
+        } else {
+            percentage = 0.0f;
+        }
     }
 }

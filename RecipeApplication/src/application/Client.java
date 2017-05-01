@@ -12,10 +12,10 @@ import utilities.*;
 public class Client extends javax.swing.JFrame {
 
     private static DataRetriever dr;
+    private int clientID;
     private final ArrayList<RecipeIngredientIF> myIngredients = new ArrayList<>();
     private ArrayList<RecipeIF> currentRecipes = new ArrayList<>();
     private boolean serverResponse = false;
-    private int clientID;
 
     /**
      * Creates new form Application
@@ -423,17 +423,15 @@ public class Client extends javax.swing.JFrame {
     
     private void addIngredient(String ingredientName, double amount, String amount_type) {
         RecipeIngredientIF ri = Utility.createRecipeIngredient(ingredientName, amount, amount_type);
-        if (Utility.checkForRepeatIngredient(ri, myIngredients)) {
+        if (ri == null) {
+            JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
+        } else if (Utility.searchArrayForIngredientName(ri, myIngredients).size() > 0) {
             JOptionPane.showMessageDialog(null, "You already have that ingredient."
                     + " Please delete it and add the new value if you have more.");
         } else {
-            if (ri != null) {
-                myIngredients.add(ri);
-                Utility.modifyList(myIngredientList, myIngredients);
-                dr.addIngredient(ri);
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingredient doesn't exist in our database.");
-            }
+            myIngredients.add(ri);
+            Utility.modifyList(myIngredientList, myIngredients);
+            dr.addIngredient(ri);
         }
     }
 
@@ -514,8 +512,8 @@ public class Client extends javax.swing.JFrame {
         searchTextField.setText(text);
     }
     
-    public void setClientID(int c){
-        this.clientID = c;
+    public void setClientID(int id) {
+        this.clientID = id;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

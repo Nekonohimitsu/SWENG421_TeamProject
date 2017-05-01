@@ -173,6 +173,9 @@ public class DataRetriever extends Thread {
                             c.setSearchText("Client of ID " + clientID +
                                     " has searched for '" + result.getKey() + "'");
                             break;
+                        case Server.CLIENT_ID:
+                            c.setClientID(clientID);
+                            break;
                         default:
                             break;
                     }

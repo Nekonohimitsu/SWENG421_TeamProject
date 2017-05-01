@@ -26,6 +26,8 @@ public interface RecipeIF extends Serializable {
     ArrayList<RecipeIngredientIF> getAddedIngredients();
     RecipeIF addIngredient(RecipeIngredientIF ri);
     boolean removeIngredient(RecipeIngredientIF ingredientName);
+    float getPercentage();
+    void createPercentage(ArrayList<RecipeIngredientIF> ril);
     @Override
     String toString();
 }
