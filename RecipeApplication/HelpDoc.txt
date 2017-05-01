@@ -1,14 +1,31 @@
-Friend Feast Instructions
-==========
 Welcome to the Friend Feast, where you don't dine ON your friend but WITH them!
+===============================================================================
 
-Why did we make this application? 
-We love to eat together, but never know what to make. We hope that this app will help us and others coordinate meals and reduce grocery waste--we college students can't afford to waste food!
+----[ Why did we make this app? ]----
+ 
+We love to eat together, but never know what to make. We hope that this app will help us and others coordinate meals and reduce grocery waste--we college students can't afford to waste food! Join a "Friend Feast" session with all of your friends to figure out what you can make together with everyone's combined ingredients!
 
-How to use this application:
-Search - You can search for a recipe by using the recipe name or some key words. E.g. "Bacon and Broccoli Mac and Cheese" or "Mac and Cheese"
-Recipe List - This is a list of available recipes. If you've added ingredients, you will see a percentage to the right of the recipe. This number tells gives you an idea of how likely it is that you can make that recipe using your current ingredients. 100% means that you have all of the required ingredients! 
-Choose Recipe - Select a recipe with a single click. Modify a recipe with a double click.
-Modify Recipe - You can change the recipe's name, prep time, cook time, ingredient list, and instructions.
-Ingredient Replacement (Modify Recipe Feature) - If you have an allergy or food preference, you can select an ingredient and replace it. E.g. Replace [Milk] with [Almond Milk]
-Add Ingredient - You can add your ingredients to the list. 
+----[ Friend Feast Instructions ]----
+
+Add Ingredient
+Under "My Ingredients" you can add what ingredient you have and how much you have of it. Adding an ingredient will change the recipes displayed in the Recipe List.
+
+Search
+You can search for a specific recipe. If the recipe is in the system, it will be added to your recipe list!
+
+Recipe List 
+This is a list of available recipes. You can populate this list by adding ingredients to the panel or by using the search function. If you've added ingredients, you will see a percentage to the right of the recipe. This number tells gives you an idea of how likely it is that you can make that recipe using your current ingredients. 100% means that you have all of the required ingredients! 
+
+Choose Recipe
+Select a recipe with a single click.
+
+Modify Recipe
+To modify a recipe, double click on a recipe in the recipe list. You can change the recipe's name, prep time, cook time, ingredient list, and instructions.
+
+----[ Tools: Add Recipe, Filter ]----
+
+Add Recipe
+You can create your own recipe! You can change the recipe's name, prep time, cook time, ingredient list, and instructions.
+
+Filter
+You can change a recipe's ingredient. This is especially useful for people with allergies or specific diets. Eg. Replace Milk with Almond Milk for a lactose-free recipe!

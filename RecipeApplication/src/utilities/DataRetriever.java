@@ -158,6 +158,7 @@ public class DataRetriever extends Thread {
                             otherClientPanels.add(p);
                             c.addPanel(p);
                             p.setIngredientList(ingList);
+                            c.setClientID(clientID);
                             break;
                         case Server.MODIFY_RECIPE_RESPONSE:
                             boolean response = (boolean)incomingObject.getMessageContent();
