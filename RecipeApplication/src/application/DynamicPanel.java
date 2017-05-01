@@ -15,6 +15,7 @@ public class DynamicPanel extends javax.swing.JPanel {
         System.out.println("ID: " + ID);
         this.ID = ID;
         initComponents();
+        clientName.setText("Client " + ID);
     }
 
     public int getID() {
@@ -38,17 +39,17 @@ public class DynamicPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        clientName = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         friendIngTextArea = new javax.swing.JTextArea();
 
         setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setBackground(new java.awt.Color(198, 222, 201));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jLabel1.setText("Friend");
-        jLabel1.setOpaque(true);
-        add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        clientName.setBackground(new java.awt.Color(198, 222, 201));
+        clientName.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        clientName.setText("Friend");
+        clientName.setOpaque(true);
+        add(clientName, java.awt.BorderLayout.PAGE_START);
 
         friendIngTextArea.setEditable(false);
         friendIngTextArea.setColumns(20);
@@ -61,8 +62,8 @@ public class DynamicPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel clientName;
     private javax.swing.JTextArea friendIngTextArea;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

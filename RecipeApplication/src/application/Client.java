@@ -31,7 +31,6 @@ public class Client extends javax.swing.JFrame {
                 dr.shutdown();
             }
         });
-        selfLabel1.setText("Welcome, Client " + clientID + "!");
     }
 
     /**
@@ -514,6 +513,7 @@ public class Client extends javax.swing.JFrame {
     
     public void setClientID(int id) {
         this.clientID = id;
+        selfLabel1.setText("Welcome, Client " + clientID + "!");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
