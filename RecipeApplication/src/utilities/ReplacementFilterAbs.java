@@ -22,9 +22,10 @@ public abstract class ReplacementFilterAbs implements ReplacementFilterIF{
     public ArrayList<RecipeIF> applyReplacement(ArrayList<RecipeIF> rl) {
         if (filter != null) rl = filter.applyReplacement(rl);
         for (RecipeIF r : rl) {
+            r.setDirections(r.getDirections().replaceAll("(?i)" + ingredientToBeReplaced, ingredientReplacing));
             ArrayList<RecipeIngredientIF> ingredientList = r.getIngredients();
             for (RecipeIngredientIF ri : ingredientList) {
-                if (ri.getIngredient().equals(ingredientToBeReplaced)) {
+                if (ri.getIngredient().toUpperCase().equals(ingredientToBeReplaced.toUpperCase())) {
                     ri.setIngredient(ingredientReplacing);
                 }
             }
