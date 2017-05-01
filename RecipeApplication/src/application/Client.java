@@ -211,6 +211,7 @@ public class Client extends javax.swing.JFrame {
         searchButton.setForeground(new java.awt.Color(137, 148, 139));
         searchButton.setText("Search");
         searchButton.setToolTipText("");
+        searchButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
@@ -512,6 +513,7 @@ public class Client extends javax.swing.JFrame {
     
     public void setClientID(int id) {
         this.clientID = id;
+        selfLabel1.setText("Welcome, Client " + clientID + "!");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

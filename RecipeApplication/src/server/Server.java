@@ -157,19 +157,19 @@ public class Server {
         }
     }
     
-    private static void searchForRecipe(SendableMessage m) throws IOException {
+    private static void searchForRecipe(SendableMessage m, ServerThread sendingClient) throws IOException {
         String recipeToSearchFor = (String) m.getMessageContent();
         ArrayList<RecipeIF> fullRecipeList = getRecipes();
-        RecipeIF recipe = null;
+        ArrayList<RecipeIF> searchResults = new ArrayList<>();
         for (RecipeIF r : fullRecipeList) {
-            if (r.getName().equals(recipeToSearchFor)) {
-                recipe = r;
-                break;
+            if (r.getName().toUpperCase().matches(".*" + recipeToSearchFor.toUpperCase() + ".*")) {
+                searchResults.add(r);
             }
         }
-        if (filter != null && recipe != null) recipe = filter.applyReplacement(recipe);
-        SimpleEntry result = new SimpleEntry(recipeToSearchFor, recipe);
-        SendableMessage message = new Message(SEARCH_RECIPE_RESPONSE, result);
+        listOfRecipes = searchResults;
+        if (filter != null && !searchResults.isEmpty()) searchResults = filter.applyReplacement(searchResults);
+        SimpleEntry result = new SimpleEntry(recipeToSearchFor, searchResults);
+        SendableMessage message = new Message(SEARCH_RECIPE_RESPONSE, result, sendingClient);
         for (ServerThread client : listOfClients) {
             client.getOutputStream().writeObject(message);
         }
@@ -198,7 +198,7 @@ public class Server {
                     applyFilter(m);
                     break;
                 case SEARCH_RECIPE:
-                    searchForRecipe(m);
+                    searchForRecipe(m, sendingClient);
                     break;
                 default:
                     break;
@@ -281,10 +281,12 @@ public class Server {
         Statement stmt;
         try {
             stmt = connector.createStatement();
+            String rName = r.getName();
+            rName = rName.replace("'", "");
             stmt.executeUpdate("INSERT INTO APP.RECIPES(RECIPE_NAME, "
                     + "RECIPE_DIRECTIONS, RECIPE_CALORIES, RECIPE_SERVINGSIZE, "
                     + "RECIPE_COOKTIME, RECIPE_PREPTIME, RECIPE_DESC) "
-                    + "VALUES ('" + r.getName() + "', '" + r.getDirections() + 
+                    + "VALUES ('" + rName + "', '" + r.getDirections() + 
                     "', " + r.getCalories() + ", " + r.getServingSize() + ", '" +
                     r.getCookTime() + "', '" + r.getPrepTime() + "', '" + r.getDesc() + "')");
             for (RecipeIngredientIF ri : r.getIngredients()) {
@@ -292,7 +294,7 @@ public class Server {
                 IngredientIF i = factory.getIngredient(ri.getIngredient());
                 stmt.executeUpdate("INSERT INTO APP.RECIPES_INGREDIENTS(RECIPE_NAME,"
                         + " INGREDIENT_ID, AMOUNT_TYPE, AMOUNT) VALUES ('" + 
-                        r.getName() + "', " + i.getID() + ", '" +
+                        rName + "', " + i.getID() + ", '" +
                         ri.getAmountType() + "', " + ri.getAmount() + ")");
             }
         } catch (SQLException ex) {

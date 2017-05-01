@@ -313,7 +313,7 @@ public class ModificationFrame extends javax.swing.JFrame {
         //Save Button - we want to make sure they change the name of the recipe if they modify it.
         if (checkChanges()) {
             RecipeIF newRecipe = new Recipe(recipeName.getText(),
-                    instructionTextArea.getText(), prepTime.getText(), cookTime.getText(), recipeBeingModified.getIngredients());
+                    instructionTextArea.getText().replace("\n","<br>"), prepTime.getText(), cookTime.getText(), recipeBeingModified.getIngredients());
             if (client.storeRecipe(newRecipe)) {
                 //Returns true if it can store to database. Otherwise, name already exists.
                 this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));

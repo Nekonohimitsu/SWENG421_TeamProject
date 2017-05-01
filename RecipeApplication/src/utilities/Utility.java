@@ -6,6 +6,7 @@ import javax.swing.JList;
 import server.IngredientFactory;
 
 public class Utility {
+    
     public static DefaultListModel modifyList(JList list, ArrayList info) {
         if (info != null){
             DefaultListModel lm = new DefaultListModel();
@@ -44,122 +45,122 @@ public class Utility {
     
     public static boolean isTeaspoon(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.equals("t") ||
-            amountType.toUpperCase().equals("TEASPOON") ||
-            amountType.toUpperCase().equals("TEASPOONS") ||
-            amountType.toUpperCase().equals("TSP"));
+        return (amountType.matches(".*\\bt\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTEASPOON\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTEASPOONS\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTSP\\b.*"));
     }
     
     public static boolean isTablespoon(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.equals("T") ||
-            amountType.toUpperCase().equals("TABLESPOON") ||
-            amountType.toUpperCase().equals("TABLESPOONS") ||
-            amountType.toUpperCase().equals("TBSP"));
+        return (amountType.matches(".*\\bT\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTABLESPOON\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTABLESPOONS\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bTBSP\\b.*"));
     }
     
     public static boolean isCup(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("C") ||
-            amountType.toUpperCase().equals("CUP") ||
-            amountType.toUpperCase().equals("CUPS"));
+        return (amountType.toUpperCase().matches(".*\\bC\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bCUP\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bCUPS\\b.*"));
     }
     
     public static boolean isDash(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("DASH") ||
-            amountType.toUpperCase().equals("DASHES"));
+        return (amountType.toUpperCase().matches(".*\\bDASH\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bDASHES\\b.*"));
     }
     
     public static boolean isPinch(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("PINCH") ||
-            amountType.toUpperCase().equals("PINCHES"));
+        return (amountType.toUpperCase().matches(".*\\bPINCH\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bPINCHES\\b.*"));
     }
     
     public static boolean isPound(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("POUND") ||
-            amountType.toUpperCase().equals("POUNDS") || 
-            amountType.toUpperCase().equals("LB") ||
-            amountType.toUpperCase().equals("LBS"));
+        return (amountType.toUpperCase().matches(".*\\bPOUND\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bPOUNDS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bLB\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bLBS\\b.*"));
     }
     
     public static boolean isDozen(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("DOZEN"));
+        return (amountType.toUpperCase().matches(".*\\bDOZEN\\b.*"));
     }
     
     public static boolean isGallon(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("GALLON") ||
-            amountType.toUpperCase().equals("GALLONS") || 
-            amountType.toUpperCase().equals("GAL") ||
-            amountType.toUpperCase().equals("GALS"));
+        return (amountType.toUpperCase().matches(".*\\bGALLON\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bGALLONS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bGAL\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bGALS\\b.*"));
     }
     
     public static boolean isOunce(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("OUNCE") ||
-            amountType.toUpperCase().equals("OUNCES") || 
-            amountType.toUpperCase().equals("OZ") ||
-            amountType.toUpperCase().equals("OZS"));
+        return (amountType.toUpperCase().matches(".*\\bOUNCE\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bOUNCES\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bOZ\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bOZS\\b.*"));
     }
     
     public static boolean isFluidOunce(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("FLUID OUNCE") ||
-            amountType.toUpperCase().equals("FLUID OUNCES") || 
-            amountType.toUpperCase().equals("FL OZ") ||
-            amountType.toUpperCase().equals("FL OZS"));
+        return (amountType.toUpperCase().matches(".*\\bFLUID OUNCE\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bFLUID OUNCES\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bFL OZ\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bFL OZS\\b.*"));
     }
     
     public static boolean isPint(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("PINT") ||
-            amountType.toUpperCase().equals("PINTS") || 
-            amountType.toUpperCase().equals("PT") ||
-            amountType.toUpperCase().equals("PTS"));
+        return (amountType.toUpperCase().matches(".*\\bPINT\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bPINTS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bPT\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bPTS\\b.*"));
     }
     
     public static boolean isQuart(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("QUART") ||
-            amountType.toUpperCase().equals("QUARTS") || 
-            amountType.toUpperCase().equals("QT") ||
-            amountType.toUpperCase().equals("QTS"));
+        return (amountType.toUpperCase().matches(".*\\bQUART\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bQUARTS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bQT\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bQTS\\b.*"));
     }
     
     public static boolean isGram(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("GRAM") ||
-            amountType.toUpperCase().equals("GRAMS") || 
-            amountType.toUpperCase().equals("G") ||
-            amountType.toUpperCase().equals("GS"));
+        return (amountType.toUpperCase().matches(".*\\bGRAM\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bGRAMS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bG\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bGS\\b.*"));
     }
     
     public static boolean isKilogram(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("KILOGRAM") ||
-            amountType.toUpperCase().equals("KILOGRAM") || 
-            amountType.toUpperCase().equals("KG") ||
-            amountType.toUpperCase().equals("KGS"));
+        return (amountType.toUpperCase().matches(".*\\bKILOGRAM\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bKILOGRAMS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bKG\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bKGS\\b.*"));
     }
     
     public static boolean isLiter(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("LITER") ||
-            amountType.toUpperCase().equals("LITERS") || 
-            amountType.toUpperCase().equals("L") ||
-            amountType.toUpperCase().equals("LS"));
+        return (amountType.toUpperCase().matches(".*\\bLITER\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bLITERS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bL\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bLS\\b.*"));
     }
     
     public static boolean isMililiter(String amountType) {
         amountType = amountType.replace(".", "");//Remove periods.
-        return (amountType.toUpperCase().equals("MILILITER") ||
-            amountType.toUpperCase().equals("MILILITERS") || 
-            amountType.toUpperCase().equals("ML") ||
-            amountType.toUpperCase().equals("MLS"));
+        return (amountType.toUpperCase().matches(".*\\bMILILITER\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bMILILITERS\\b.*") || 
+            amountType.toUpperCase().matches(".*\\bML\\b.*") ||
+            amountType.toUpperCase().matches(".*\\bMLS\\b.*"));
     }
     
     public static double convertToCups(String amountType, double amount) {
